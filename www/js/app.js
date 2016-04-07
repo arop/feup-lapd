@@ -22,3 +22,22 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+
+.controller('MenuController', function(){
+  this.titleBarName = "Home";
+
+  this.menuItems = [
+  { name: 'Home'},
+  { name: 'Agencies'},
+  { name: 'Schedules'},
+  { name: 'Trip planner'},
+  { name: 'Help'},
+  { name: 'Contacts'}];
+
+  this.setTitleBarName = function(name) {
+    if(name)
+      this.titleBarName = name;
+    else this.titleBarName = "Home";
+  }
+
+})
