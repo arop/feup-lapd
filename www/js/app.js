@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('starter', ['ionic','starter.agencies'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,21 +23,32 @@ angular.module('starter', ['ionic'])
   });
 })
 
-.controller('MenuController', function(){
-  this.titleBarName = "Home";
+.config(function($stateProvider, $urlRouterProvider) {
+  $stateProvider
 
-  this.menuItems = [
-  { name: 'Home'},
-  { name: 'Agencies'},
-  { name: 'Schedules'},
-  { name: 'Trip planner'},
-  { name: 'Help'},
-  { name: 'Contacts'}];
+  .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/menu.html',
+  })
 
-  this.setTitleBarName = function(name) {
-    if(name)
-      this.titleBarName = name;
-    else this.titleBarName = "Home";
-  }
+  .state('app.agencies', {
+    url: '/agencies',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/agencies.html'
+      }
+    }
+  })
 
-})
+  .state('app.home', {
+  url: '/home',
+  views: {
+    'menuContent': {
+      templateUrl: 'templates/home.html',
+      }
+    }
+  });
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/home');
+});
