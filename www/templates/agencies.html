@@ -1,8 +1,8 @@
 <ion-view title="Agencies">
   <ion-content>
     <ion-list>
-      <ion-item>
-        estou nas agencies
+      <ion-item ng-repeat="agency in agencies">
+      	{{agency.name}}
       </ion-item>
     </ion-list>
   </ion-content>
