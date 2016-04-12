@@ -1,9 +1,9 @@
-// Ionic Starter App
+// Ionic lapd App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'lapd' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic','starter.map','starter.agencies'])
+angular.module('lapd', ['ionic','lapd.map','lapd.agencies', 'lapd.ost','ionic-numberpicker'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -48,6 +48,16 @@ angular.module('starter', ['ionic','starter.map','starter.agencies'])
       'menuContent': {
         templateUrl: 'templates/map.html',
         controller: 'MapCtrl'
+      }
+    }
+  })
+
+  .state('app.stops', {
+    url: '/stops',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/stops.html',
+        controller: 'StopsController'
       }
     }
   })

@@ -1,4 +1,4 @@
-angular.module('starter.agencies', [])
+angular.module('lapd.agencies', [])
 
 .controller('AgenciesController', function($scope, $http){
 	var url = "http://localhost:8080/exist/agencies.xql";

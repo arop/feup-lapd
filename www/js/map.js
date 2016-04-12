@@ -1,4 +1,4 @@
-angular.module('starter.map', ['ionic','ngCordova'])
+angular.module('lapd.map', ['ngCordova'])
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
@@ -15,6 +15,7 @@ angular.module('starter.map', ['ionic','ngCordova'])
 
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
@@ -23,6 +24,14 @@ angular.module('starter.map', ['ionic','ngCordova'])
           animation: google.maps.Animation.DROP,
           position: latLng
         });      
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: "You are here!"
+        });
+
+        google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+        });
 
       });
 

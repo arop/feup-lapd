@@ -1,0 +1,24 @@
+{
+  "name": "ionic-numberpicker",
+  "version": "1.0.0",
+  "authors": [
+    "milk can llc <admin@milkcan.io>"
+  ],
+  "description": "A number picker for Ionic framework",
+  "main": [
+    "./dist/ionic-numberpicker.bundle.min.js"
+  ],
+  "scripts": {},
+  "author": "https://github.com/milkcan, admin@milkcan.io",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-css2js": "^1.0.2",
+    "gulp-minify-html": "^1.0.4",
+    "gulp-ng-html2js": "^0.2.0",
+    "gulp-uglify": "^1.4.1"
+  }
+}
