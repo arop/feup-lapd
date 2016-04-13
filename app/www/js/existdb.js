@@ -1,7 +1,18 @@
+angular.module('lapd.existdb', ['ngCordova'])
 
-angular.module('lapd.ost', ['ngCordova'])
+.controller('AgenciesController', function($scope, $http){
+	var url = "http://localhost:8080/exist/lapd/agencies.xql";
 
-.controller('StopsOSTController', function($scope, $http, $cordovaGeolocation){
+	$http.get(url).success( function(response) {
+		var x2js = new X2JS();
+		var json = x2js.xml_str2json( response );
+
+		$scope.agencies = json.result.agency;
+	});
+	
+})
+
+.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation){
 	$scope.poslat = 0;
 	$scope.poslon = 0;
 	$scope.range = 0.5;
@@ -19,16 +30,29 @@ angular.module('lapd.ost', ['ngCordova'])
 
 	};
 
-
 	$scope.getCloseStops = function() {
-		var url = "https://api.ost.pt/stops/?";
+		var url = "http://localhost:8080/exist/lapd/stops_nearby.xql?";
 
-		url += "center=" + $scope.poslon + "%2C" + $scope.poslat;
-		url += "&range=" + $scope.range;
-		url += "&withroutes=false&key=wOfLniMzlmTPRoUSOLmLWVyyWpnnNotUsisSFTTF";
+		url += "lon=" + $scope.poslon;
+		url += "&lat=" + $scope.poslat;
+		url += "&rng=" + $scope.range;
 
 		$http.get(url).success( function(response) {
-			$scope.stops = response.Objects;
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.stops = json.result.stop;
+		});
+	};
+
+	$scope.getStop = function() {
+		var url = "http://localhost:8080/exist/lapd/stop.xql?";
+
+		url += "id=" + $stateParams.id;
+
+		$http.get(url).success( function(response) {
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.stop = json.result.stop;
 		});
 	};
 
@@ -52,4 +76,3 @@ angular.module('lapd.ost', ['ngCordova'])
 };
 
 });
-

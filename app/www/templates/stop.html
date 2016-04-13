@@ -1,0 +1,14 @@
+<ion-view title="{{stop.stop_name}}" data-ng-init="getStop()">
+<ion-content>
+	<h3>Latitude: {{stop.point.coordinates[1]}} | Longitude: {{stop.point.coordinates[0]}}</h3>
+	<button ng-click="showMapBoolean=!showMapBoolean" ng-init="showMapBoolean=false">Show in map</button>
+	<h3>Distance (km): {{ stop.distance }}</h3>
+	<ion-list>
+	  <ion-item ng-repeat="route in stop._routes">
+	  	{{route.route_short_name}}
+	  </ion-item>
+	</ion-list>
+
+	<div style="height:70vh" id="stopmap" ng-show="showMapBoolean" data-tap-disabled="true" ng-controller="StopMapCtrl" ></div>
+</ion-content>
+</ion-view>

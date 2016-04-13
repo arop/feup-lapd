@@ -3,22 +3,19 @@
 <h1>Position
 	<button class="button button-icon button-clear" ng-click="getPos()">Check my position</button></h1>
 	<h3>Latitude: {{poslat}} | Longitude: {{poslon}}</h3>
-	<ionic-numberpicker input-obj="numberPickerObject">
 	<h3>Range (km): {{ range }}</h3>
-	<button class="button button-icon button-clear" ng-show="hasPosition">
-		<i class="fa fa-dot-circle-o" aria-hidden="true"></i> Get stops near you
-	</button> 
+	<ionic-numberpicker input-obj="numberPickerObject">
+		<button class="button button-icon button-clear" ng-show="hasPosition">
+			<i class="fa fa-dot-circle-o" aria-hidden="true"></i> Get stops near you
+		</button> 
+	</ionic-numberpicker>
 	<div>
 		<h1>Stops near you</h1>
 		<ion-list>
-		  <ion-item ng-repeat="stop in stops">
+		  <ion-item ng-repeat="stop in stops" href="#/app/stop/{{stop.id}}">
 		  	Name: {{stop.stop_name}}
-		  	Distance: {{stop.distance | number: 3}} km
-		  	Lat: {{stop.point.coordinates[1]}}
-		  	Lon: {{stop.point.coordinates[0]}}
 		  </ion-item>
 		</ion-list>
 	</div>
-</ionic-numberpicker>
 </ion-content>
 </ion-view>
