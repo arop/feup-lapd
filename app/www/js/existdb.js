@@ -1,5 +1,5 @@
-//var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
-var base_url = 'http://localhost:8080/exist/lapd';
+var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
+//var base_url = 'http://localhost:8080/exist/lapd';
 
 angular.module('lapd.existdb', ['ngCordova'])
 
