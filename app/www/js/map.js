@@ -1,6 +1,6 @@
 angular.module('lapd.map', ['ngCordova'])
 
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+.controller('MapCtrl', function($scope, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -39,22 +39,23 @@ angular.module('lapd.map', ['ngCordova'])
     });
 })
 
-.controller('StopMapCtrl', function($scope, $state, $cordovaGeolocation) {
+.controller('StopMapCtrl', function($scope, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
-
-  console.log($scope.stop);
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var stopLatLng = new google.maps.LatLng(document.getElementById("coord").getAttribute("lat"),
+      document.getElementById("coord").getAttribute("lon"));
 
     var mapOptions = {
-      center: latLng,
+      center: stopLatLng,
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     $scope.map = new google.maps.Map(document.getElementById("stopmap"), mapOptions);
+
 
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
@@ -63,7 +64,7 @@ angular.module('lapd.map', ['ngCordova'])
           map: $scope.map,
           animation: google.maps.Animation.DROP,
           position: latLng
-        });      
+        });
 
         var infoWindow = new google.maps.InfoWindow({
           content: "You are here!"
@@ -76,7 +77,7 @@ angular.module('lapd.map', ['ngCordova'])
         var stopmarker = new google.maps.Marker({
           map: $scope.map,
           animation: google.maps.Animation.DROP,
-          position: latLng
+          position: stopLatLng
         });      
 
         var stopInfoWindow = new google.maps.InfoWindow({
