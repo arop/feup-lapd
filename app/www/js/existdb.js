@@ -1,7 +1,10 @@
+//var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
+var base_url = 'http://localhost:8080/exist/lapd';
+
 angular.module('lapd.existdb', ['ngCordova'])
 
 .controller('AgenciesController', function($scope, $http){
-	var url = "http://localhost:8080/exist/lapd/agencies.xql";
+	var url = base_url + "/agencies.xql";
 
 	$http.get(url).success( function(response) {
 		var x2js = new X2JS();
@@ -31,7 +34,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getCloseStops = function() {
-		var url = "http://localhost:8080/exist/lapd/stops_nearby.xql?";
+		var url = base_url + "/stops_nearby.xql?";
 
 		url += "lon=" + $scope.poslon;
 		url += "&lat=" + $scope.poslat;
@@ -45,7 +48,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getStop = function() {
-		var url = "http://localhost:8080/exist/lapd/stop.xql?";
+		var url = base_url + "/stop.xql?";
 
 		url += "id=" + $stateParams.id;
 
