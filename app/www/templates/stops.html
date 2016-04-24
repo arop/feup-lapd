@@ -12,8 +12,8 @@
 	<div>
 		<h1>Stops near you</h1>
 		<ion-list>
-		  <ion-item ng-repeat="stop in stops" href="#/app/stop/{{stop.id}}">
-		  	Name: {{stop.stop_name}}
+		  <ion-item ng-repeat="stop in stops" >
+		  	<a ui-sref="app.stop({id: stop.id})">Name: {{stop.stop_name}}</a>  
 		  </ion-item>
 		</ion-list>
 	</div>

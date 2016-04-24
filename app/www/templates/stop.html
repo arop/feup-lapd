@@ -2,6 +2,7 @@
 <ion-content>
 	<h3 id="coord" lat="{{stop.point.coordinates[1]}}" lon="{{stop.point.coordinates[0]}}">Latitude: {{stop.point.coordinates[1]}} | Longitude: {{stop.point.coordinates[0]}}</h3>
 	<button ng-click="showMapBoolean=!showMapBoolean" ng-init="showMapBoolean=false">Show in map</button>
+	<button ui-sref=".schedule">Show schedule</button>
 	<h3>Distance (km): {{ stop.distance }}</h3>
 	<ion-list>
 	  <ion-item ng-repeat="route in stop._routes">

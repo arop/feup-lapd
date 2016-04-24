@@ -22,6 +22,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 	$scope.hasPosition = false;
 
+	$scope.stop = {};
+
 	$scope.getPos = function() {
 		$scope.hasPosition = true;
 		var options = {timeout: 10000, enableHighAccuracy: true};
@@ -59,10 +61,23 @@ angular.module('lapd.existdb', ['ngCordova'])
 		});
 	};
 
+	$scope.getStopSchedule = function() {
+		var url = base_url + "/stop-schedule.xql?";
+
+		url += "stop_id=" + $stateParams.id;
+
+		$http.get(url).success( function(response) {
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.schedule = json.result.route;
+			console.log($scope.schedule);
+		});
+	};
+
 	$scope.numberPickerObject = {
     inputValue: $scope.range, //Optional
     minValue: 0,
-    maxValue: 10,
+    maxValue: 100,
     decimalCharacter: '.',  //Optional
     decimalStep: 0.1,  //Optional
     format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
