@@ -7,7 +7,7 @@ response:set-header("Access-Control-Allow-Origin","*"),
 
 	for $route in doc("stoptimes-stcp.xml")//route[./stoptimes/stop_id = $id] 
 	return 
-		<route short-name="{$route/route_short_name}" long-name="{$route/route_long_name}" id="{$route/id}">
+		<route short_name="{$route/route_short_name}" long_name="{$route/route_long_name}" id="{$route/id}">
 		{
 			for $stoptime in $route//stoptimes[./stop_id = $id]
 			let $time := $stoptime/arrival_times
@@ -17,13 +17,13 @@ response:set-header("Access-Control-Allow-Origin","*"),
 					(if (empty($time))
 					then (
 						for $previous in ($stoptime/preceding-sibling::stoptimes[not(empty(./arrival_times))]/arrival_times)[last()]
-						return <previous-stop stop-sequence="{$previous/following-sibling::stop_sequence/text()}">{$previous/text()}</previous-stop>,
+						return <previous_stop stop_sequence="{$previous/following-sibling::stop_sequence/text()}">{$previous/text()}</previous_stop>,
 						for $next in ($stoptime/following-sibling::stoptimes[not(empty(./arrival_times))]/arrival_times)[1]
-						return <next-stop stop-sequence="{$next/following-sibling::stop_sequence/text()}">{$next/text()}</next-stop>,
-						<wanted-stop stop-sequence="{$stoptime/stop_sequence/text()}"></wanted-stop>
+						return <next_stop stop_sequence="{$next/following-sibling::stop_sequence/text()}">{$next/text()}</next_stop>,
+						<wanted_stop stop_sequence="{$stoptime/stop_sequence/text()}"></wanted_stop>
 					)
 					else
-						$time
+						<arrival_time>{$time/text()}</arrival_time>
 					)
 				}
 				</stoptime>
