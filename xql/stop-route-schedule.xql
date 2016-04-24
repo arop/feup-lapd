@@ -3,13 +3,14 @@ response:set-header("Access-Control-Allow-Origin","*"),
 <result>
 {
 	
-	let $id:= request:get-parameter('stop_id', '')
+	let $stop_id:= request:get-parameter('stop_id', '')
+	let $route_id:= request:get-parameter('route_id', '')
 
-	for $route in doc("stoptimes-stcp.xml")//route[./stoptimes/stop_id = $id] 
+	for $route in doc("stoptimes-stcp.xml")//route[./id = $route_id] 
 	return 
 		<route short-name="{$route/route_short_name}" long-name="{$route/route_long_name}" id="{$route/id}">
 		{
-			for $stoptime in $route//stoptimes[./stop_id = $id]
+			for $stoptime in $route//stoptimes[./stop_id = $stop_id]
 			let $time := $stoptime/arrival_times
 			return 
 				<stoptime>
