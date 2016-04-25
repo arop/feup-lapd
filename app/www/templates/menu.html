@@ -10,6 +10,15 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+
+      <!--<ion-nav-buttons side="right">
+        <span class="button button-small">
+            <i class="icon ion-search placeholder-icon"></i>
+        </span>
+      </ion-nav-buttons>-->
+      <search-bar ng-model="search"></search-bar>
+
+
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
@@ -30,8 +39,8 @@
         <ion-item menu-close href="#/app/schedules">
           Schedules
         </ion-item>
-        <ion-item menu-close href="#/app/stops">
-          Near Stops
+        <ion-item menu-close href="#/app/search">
+          Search
         </ion-item>
         <ion-item menu-close href="#/app/tripplanner">
           Trip Planner
