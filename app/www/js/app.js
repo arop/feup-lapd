@@ -52,12 +52,12 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
     }
   })
 
-  .state('app.stops', {
-    url: '/stops',
+  .state('app.search', {
+    url: '/search',
     views: {
       'menuContent': {
-        templateUrl: 'templates/stops.html',
-        controller: 'StopsController'
+        templateUrl: 'templates/search.html',
+        controller: 'SearchController'
       }
     }
   })
@@ -92,6 +92,4 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
-});
-
-
+})
