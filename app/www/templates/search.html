@@ -33,7 +33,10 @@
 	<div ng-if="showResults">
 		<h1>Search results</h1>
 		<ion-list>
-		  <ion-item ng-repeat="s in searchResult" ui-sref="app.stop({id: s.id})">
+		  <ion-item ng-repeat="s in searchResult" ui-sref="app.stop({id: s.id})" ng-if="search.by == searchOptions[0]">
+		  	{{s.stop_name}}
+		  </ion-item>
+		  <ion-item ng-repeat="s in searchResult" ui-sref="app.stop({id: s.id})" ng-if="search.by == searchOptions[1]">
 		  	{{s.stop_name}}
 		  </ion-item>
 		</ion-list>
