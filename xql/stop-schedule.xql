@@ -5,7 +5,7 @@ response:set-header("Access-Control-Allow-Origin","*"),
 	
 	let $id:= request:get-parameter('stop_id', '')
 
-	for $route in doc("stoptimes-stcp.xml")//route[./stoptimes/stop_id = $id] 
+	for $route in doc("stoptimes/stoptimes-stcp.xml")//route[./stoptimes/stop_id = $id] 
 	return 
 		<route short_name="{$route/route_short_name}" long_name="{$route/route_long_name}" id="{$route/id}">
 		{

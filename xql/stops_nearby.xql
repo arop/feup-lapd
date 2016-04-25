@@ -9,7 +9,7 @@ response:set-header("Access-Control-Allow-Origin","*"),
 	let $lon:= number(request:get-parameter('lon', ''))
 	let $rng:= number(request:get-parameter('rng', ''))
 
-	for $stop in doc("stops_stcp.xml")//stop
+	for $stop in doc("stops/stops_stcp.xml")//stop
 	let $lat_temp := number($stop/point/coordinates[last()])
 	let $lon_temp := number($stop/point/coordinates[1])
 	let $lat_delta := $rng div 110.574
