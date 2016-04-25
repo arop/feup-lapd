@@ -71,7 +71,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 	if($scope.showNearStops === undefined) $scope.showNearStops = false;
 
 	var _text = "";
-	var _by = "Stop";
+	var _by = "";
+	$scope.searchOptions = ['Stop','Route'];
 
 	$scope.search = {
 		text: function(newText) { return arguments.length ? (_text = newText) : _text; },
@@ -82,8 +83,32 @@ angular.module('lapd.existdb', ['ngCordova'])
 	$scope.search = function() {
 		console.log($scope.search.text);
 		console.log($scope.search.by);
+		var url = "";
+
+		if($scope.search.by === "Stop") {
+			url = base_url + "/search-stop-name.xql?";
+			url += "search=" + $scope.search.text;
+
+			$http.get(url).success( function(response) {
+				var x2js = new X2JS();
+				var json = x2js.xml_str2json( response );
+				$scope.searchResult = json.result.stop;
+				$scope.showResults = true;
+			});
+			
+		} else if($scope.search.by === "Route") {
+			url = base_url + "/search-route-name.xql?";
+			url += "search=" + $scope.search.text;
+
+			$http.get(url).success( function(response) {
+				var x2js = new X2JS();
+				var json = x2js.xml_str2json( response );
+				$scope.searchResult = json.result.route;
+			});
+		}
+
 	}
-	
+
 	$scope.getPos = function() {
 		$scope.hasPosition = true;
 		var options = {timeout: 10000, enableHighAccuracy: true};
@@ -124,6 +149,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    	//timePickerCallback(val);
 	    	$scope.range = val;
 	    	$scope.getCloseStops();
+	    	$scope.showResults = false;
 	    	$scope.showNearStops = true;
 	    }
 	};

@@ -6,9 +6,7 @@
 	    <div class="input-label">
 	      Search by
 	    </div>
-	    <select ng-model="search.by">
-	      <option>Route</option>
-	      <option selected>Stop</option>
+	    <select ng-model="search.by" ng-init="search.by = searchOptions[0]" ng-options="option for option in searchOptions">
 	    </select>
 	  </label>
 	  <label class="item item-input">
@@ -27,6 +25,15 @@
 		<h1>Stops near you</h1>
 		<ion-list>
 		  <ion-item ng-repeat="s in stops" ui-sref="app.stop({id: s.id})">
+		  	{{s.stop_name}}
+		  </ion-item>
+		</ion-list>
+	</div>
+
+	<div ng-if="showResults">
+		<h1>Search results</h1>
+		<ion-list>
+		  <ion-item ng-repeat="s in searchResult" ui-sref="app.stop({id: s.id})">
 		  	{{s.stop_name}}
 		  </ion-item>
 		</ion-list>
