@@ -63,7 +63,7 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
   })
 
   .state('app.stop.schedule', {
-    url: '/schedule',
+    url: '/schedule/:route_id',
     views: {
       'menuContent@app': {
         templateUrl: 'templates/stop_schedule.html',

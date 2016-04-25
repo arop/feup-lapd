@@ -58,18 +58,36 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.stop = json.result.stop;
+			console.log(json);
 		});
 	};
 
 	$scope.getStopSchedule = function() {
-		var url = base_url + "/stop-schedule.xql?";
+		var url = base_url + "/stop-route-schedule.xql?";
 
-		url += "stop_id=" + $stateParams.id;
+		url += "stop_id=" + $stateParams.id + "&route_id=" + $stateParams.route_id;
 
 		$http.get(url).success( function(response) {
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.schedule = json.result.route;
+			
+			var stoptimes = [];
+			var stoptimes_temp = json.result.route.stoptime;
+			console.log(stoptimes_temp);
+			for (var stoptime in stoptimes_temp){
+				if(stoptimes_temp[stoptime].arrival_time !== undefined){
+					stoptimes.push(stoptimes_temp[stoptime].arrival_time);
+				}
+				else{
+					var prev_seq = stoptimes_temp[stoptime].previous_stop._stop_sequence;
+					var next_seq = stoptimes_temp[stoptime].next_stop._stop_sequence;
+					var want_seq = stoptimes_temp[stoptime].wanted_stop._stop_sequence;
+
+					stoptimes.push(stoptimes_temp[stoptime].previous_stop.__text + ' - previous stop');
+				}
+			}
+			$scope.schedule = uniq(stoptimes);
 			console.log($scope.schedule);
 		});
 	};
@@ -94,3 +112,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 };
 
 });
+
+function uniq(a) {
+    return a.sort().filter(function(item, pos, ary) {
+        return !pos || item != ary[pos - 1];
+    })
+}

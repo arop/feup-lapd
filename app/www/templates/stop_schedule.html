@@ -1,6 +1,13 @@
 <ion-view title="{{stop.stop_name}}" data-ng-init="getStopSchedule()">
 	<ion-content>
-		<ion-list ng-repeat="route in schedule track by $index">
+
+		<ion-list>
+		  <ion-item ng-repeat="time in schedule" >
+		  	{{time}}
+		  </ion-item>
+		</ion-list>
+
+		<!--<ion-list ng-repeat="route in schedule track by $index">
 			<div class="item item-divider">
 				id: {{route._id}} | long-name: {{route["_long-name"]}} | short-name: {{route["_short-name"]}}
   			</div>
@@ -9,6 +16,6 @@
 					{{arrival_times.arrival_times | limitTo: 5}}
 				</ion-item>
 			</ion-list>
-		</ion-list>
+		</ion-list>-->
 	</ion-content>
 </ion-view>
