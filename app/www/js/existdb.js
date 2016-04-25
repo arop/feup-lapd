@@ -18,7 +18,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 	if($scope.stop === undefined) $scope.stop = {};
 
 	$scope.getStop = function() {
-		console.log("vai mudar o stop no get stop");
 		var url = base_url + "/stop.xql?";
 
 		url += "id=" + $stateParams.id;
@@ -81,8 +80,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 
 	$scope.search = function() {
-		console.log($scope.search.text);
-		console.log($scope.search.by);
 		var url = "";
 
 		if($scope.search.by === "Stop") {
@@ -92,7 +89,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 			$http.get(url).success( function(response) {
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
-				$scope.searchResult = json.result.stop;
+				$scope.searchResultStops = [].concat(json.result.stop);
 				$scope.showResults = true;
 			});
 			
@@ -103,7 +100,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 			$http.get(url).success( function(response) {
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
-				$scope.searchResult = json.result.route;
+				$scope.searchResultRoutes = [].concat(json.result.route);
+				$scope.showResults = true;
+				console.log($scope.searchResultRoutes);
 			});
 		}
 
