@@ -29,7 +29,7 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
   .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html',
+    templateUrl: 'templates/menu.html'
   })
 
   .state('app.agencies', {
@@ -96,10 +96,10 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
     url: '/home',
     views: {
       'menuContent': {
-        templateUrl: 'templates/home.html',
+        templateUrl: 'templates/home.html'
       }
     }
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
-})
+});
