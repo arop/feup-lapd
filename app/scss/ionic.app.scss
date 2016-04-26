@@ -20,6 +20,10 @@ $blue: #0093D8;
 // styles
 
 /* menu */
+div.title {
+  text-align: center !important;
+}
+
 #left-side-menu {
   background: rgba(128, 128, 128, 0.48);
 
@@ -123,7 +127,7 @@ $blue: #0093D8;
 }
 
 /* agencies */
-#agencies {
+#agencies_view {
   ion-list {
     ion-item {
       text-align: center;

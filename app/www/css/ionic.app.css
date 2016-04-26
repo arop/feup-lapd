@@ -9716,6 +9716,9 @@ a.button {
   transition-duration: 0s; }
 
 /* menu */
+div.title {
+  text-align: center !important; }
+
 #left-side-menu {
   background: rgba(128, 128, 128, 0.48); }
   #left-side-menu ion-item:first-child {
@@ -9787,11 +9790,11 @@ a.button {
         background: forestgreen; }
 
 /* agencies */
-#agencies ion-list ion-item {
+#agencies_view ion-list ion-item {
   text-align: center;
   border: none; }
-  #agencies ion-list ion-item:nth-child(2n) {
+  #agencies_view ion-list ion-item:nth-child(2n) {
     background: rgba(128, 128, 128, 0.08); }
-  #agencies ion-list ion-item a {
+  #agencies_view ion-list ion-item a {
     text-decoration: none;
     color: black; }
