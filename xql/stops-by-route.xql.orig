@@ -1,0 +1,17 @@
+response:set-header("Access-Control-Allow-Origin","*"),
+<result>
+{
+
+	let $route_id := request:get-parameter('route_id', '')
+	for $stops in doc("stoptimes/stops-stcp.xml")//stop
+<<<<<<< HEAD
+	where $stops/_routes/id/text() = $route_id
+=======
+	where $stops/_routes/id = $route_id
+>>>>>>> 41423b93d3ba0ec5dcfc0c9350aef0fb60a64d52
+	return <stop>
+		{$stops/id}
+		{$stops/stop_name}
+	</stop>
+}
+</result>
