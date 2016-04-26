@@ -14,11 +14,21 @@ angular.module('lapd.existdb', ['ngCordova'])
 	});
 })
 
-.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation){
+.service('currentStop', function () {
+	var currentStop = this;
+	currentStop.stop = {};
+})
+
+.service('currentRoute', function () {
+	var currentRoute = this;
+	currentRoute.route = {};
+})
+
+.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, currentStop){
 	if($scope.stop === undefined) $scope.stop = {};
 
 	$scope.getStop = function() {
-		var url = base_url + "/stop.xql?";
+		/*var url = base_url + "/stop.xql?";
 
 		url += "id=" + $stateParams.id;
 
@@ -27,6 +37,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var json = x2js.xml_str2json( response );
 			$scope.stop = json.result.stop;
 		});
+		*/
+		$scope.stop = currentStop.stop;
 	};
 
 	$scope.getStopSchedule = function() {
@@ -74,10 +86,28 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 })
 
-.controller('SearchController', function($scope, $http, $cordovaGeolocation){
+.controller('RoutesController', function($scope, $stateParams, $http, currentRoute) {
+
+	$scope.getStopsOfRoute = function() {
+		$scope.route = currentRoute.route;
+
+		var url = base_url + "/stops-by-route.xql?";
+
+		url += "id=" + $stateParams.id;
+
+		$http.get(url).success( function(response) {
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.stops = json.result.stop;
+			console.log(json);
+		});
+	};
+})
+
+.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, currentStop, currentRoute){
 	if($scope.poslat === undefined) $scope.poslat = 0;
 	if($scope.poslon === undefined) $scope.poslon = 0;
-	if($scope.range === undefined) $scope.range = 40.0;
+	if($scope.range === undefined) $scope.range = 1.0;
 
 	if($scope.hasPosition === undefined) $scope.hasPosition = false;
 	if($scope.showNearStops === undefined) $scope.showNearStops = false;
@@ -115,11 +145,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 				var json = x2js.xml_str2json( response );
 				$scope.searchResultRoutes = [].concat(json.result.route);
 				$scope.showResults = true;
-				console.log($scope.searchResultRoutes);
 			});
 		}
-
-	}
+	};
 
 	$scope.getPos = function() {
 		$scope.hasPosition = true;
@@ -129,6 +157,18 @@ angular.module('lapd.existdb', ['ngCordova'])
 			$scope.poslat = position.coords.latitude;
 			$scope.poslon = position.coords.longitude;
 		});
+	};
+
+	$scope.viewStop = function(stop) {
+		currentStop.stop = stop;
+
+		$state.go('app.stop',{'id' : stop.id});
+	};
+
+	$scope.viewRoute = function(route) {
+		currentRoute.route = route;
+
+		$state.go('app.route',{'id' : route.id});
 	};
 
 	$scope.getCloseStops = function() {
@@ -153,7 +193,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    decimalStep: 0.1,  //Optional
 	    format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
 	    titleLabel: 'Range (km)',  //Optional
-	    setLabel: 'Set',  //Optional
+	    setLabel: 'Search',  //Optional
 	    closeLabel: 'Close',  //Optional
 	    setButtonType: 'button-positive',  //Optional
 	    closeButtonType: 'button-stable',  //Optional
@@ -165,7 +205,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    	$scope.showNearStops = true;
 	    }
 	};
-});
+})
+
 
 function uniq(a) {
 	return a.sort().filter(function(item, pos, ary) {

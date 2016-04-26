@@ -82,6 +82,16 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
     }
   })
 
+  .state('app.route', {
+    url: '/route/:id',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/route.html',
+        controller: 'RoutesController'
+      }
+    }
+  })
+
   .state('app.home', {
     url: '/home',
     views: {
