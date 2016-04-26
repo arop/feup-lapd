@@ -12,15 +12,101 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 		$scope.agencies = json.result.agency;
 	});
-	
 })
 
 .controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation){
-	$scope.poslat = 0;
-	$scope.poslon = 0;
-	$scope.range = 0.5;
+	if($scope.stop === undefined) $scope.stop = {};
 
-	$scope.hasPosition = false;
+	$scope.getStop = function() {
+		var url = base_url + "/stop.xql?";
+
+		url += "id=" + $stateParams.id;
+
+		$http.get(url).success( function(response) {
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.stop = json.result.stop;
+		});
+	};
+
+	$scope.getStopSchedule = function() {
+		var url = base_url + "/stop-route-schedule.xql?";
+
+		url += "stop_id=" + $stateParams.id + "&route_id=" + $stateParams.route_id;
+
+		$http.get(url).success( function(response) {
+			var x2js = new X2JS();
+			var json = x2js.xml_str2json( response );
+			$scope.schedule = json.result.route;
+			
+			var stoptimes = [];
+			var stoptimes_temp = json.result.route.stoptime;
+			//console.log(stoptimes_temp);
+
+			for (var stoptime in stoptimes_temp){
+				if(stoptimes_temp[stoptime].arrival_time !== undefined){
+					stoptimes.push(stoptimes_temp[stoptime].arrival_time);
+				}
+				else{
+					var prev_seq = stoptimes_temp[stoptime].previous_stop._stop_sequence;
+					var next_seq = stoptimes_temp[stoptime].next_stop._stop_sequence;
+					var want_seq = stoptimes_temp[stoptime].wanted_stop._stop_sequence;
+
+					stoptimes.push(stoptimes_temp[stoptime].previous_stop.__text + ' - previous stop');
+				}
+			}
+			$scope.schedule = uniq(stoptimes);
+			//console.log($scope.schedule);
+		});
+	};
+})
+
+.controller('SearchController', function($scope, $http, $cordovaGeolocation){
+	if($scope.poslat === undefined) $scope.poslat = 0;
+	if($scope.poslon === undefined) $scope.poslon = 0;
+	if($scope.range === undefined) $scope.range = 40.0;
+
+	if($scope.hasPosition === undefined) $scope.hasPosition = false;
+	if($scope.showNearStops === undefined) $scope.showNearStops = false;
+
+	var _text = "";
+	var _by = "";
+	$scope.searchOptions = ['Stop','Route'];
+
+	$scope.search = {
+		text: function(newText) { return arguments.length ? (_text = newText) : _text; },
+		by: function(newBy) { return arguments.length ? (_by = newBy) : _by; }
+	};
+
+
+	$scope.search = function() {
+		var url = "";
+
+		if($scope.search.by === "Stop") {
+			url = base_url + "/search-stop-name.xql?";
+			url += "search=" + $scope.search.text;
+
+			$http.get(url).success( function(response) {
+				var x2js = new X2JS();
+				var json = x2js.xml_str2json( response );
+				$scope.searchResultStops = [].concat(json.result.stop);
+				$scope.showResults = true;
+			});
+			
+		} else if($scope.search.by === "Route") {
+			url = base_url + "/search-route-name.xql?";
+			url += "search=" + $scope.search.text;
+
+			$http.get(url).success( function(response) {
+				var x2js = new X2JS();
+				var json = x2js.xml_str2json( response );
+				$scope.searchResultRoutes = [].concat(json.result.route);
+				$scope.showResults = true;
+				console.log($scope.searchResultRoutes);
+			});
+		}
+
+	}
 
 	$scope.getPos = function() {
 		$scope.hasPosition = true;
@@ -30,7 +116,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 			$scope.poslat = position.coords.latitude;
 			$scope.poslon = position.coords.longitude;
 		});
-
 	};
 
 	$scope.getCloseStops = function() {
@@ -47,35 +132,30 @@ angular.module('lapd.existdb', ['ngCordova'])
 		});
 	};
 
-	$scope.getStop = function() {
-		var url = base_url + "/stop.xql?";
-
-		url += "id=" + $stateParams.id;
-
-		$http.get(url).success( function(response) {
-			var x2js = new X2JS();
-			var json = x2js.xml_str2json( response );
-			$scope.stop = json.result.stop;
-		});
-	};
-
 	$scope.numberPickerObject = {
-    inputValue: $scope.range, //Optional
-    minValue: 0,
-    maxValue: 10,
-    decimalCharacter: '.',  //Optional
-    decimalStep: 0.1,  //Optional
-    format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
-    titleLabel: 'Range (km)',  //Optional
-    setLabel: 'Set',  //Optional
-    closeLabel: 'Close',  //Optional
-    setButtonType: 'button-positive',  //Optional
-    closeButtonType: 'button-stable',  //Optional
-    callback: function (val) {    //Mandatory
-    	//timePickerCallback(val);
-    	$scope.range = val;
-    	$scope.getCloseStops();
-    }
-};
-
+	    inputValue: $scope.range, //Optional
+	    minValue: 0,
+	    maxValue: 100,
+	    decimalCharacter: '.',  //Optional
+	    decimalStep: 0.1,  //Optional
+	    format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
+	    titleLabel: 'Range (km)',  //Optional
+	    setLabel: 'Set',  //Optional
+	    closeLabel: 'Close',  //Optional
+	    setButtonType: 'button-positive',  //Optional
+	    closeButtonType: 'button-stable',  //Optional
+	    callback: function (val) {    //Mandatory
+	    	//timePickerCallback(val);
+	    	$scope.range = val;
+	    	$scope.getCloseStops();
+	    	$scope.showResults = false;
+	    	$scope.showNearStops = true;
+	    }
+	};
 });
+
+function uniq(a) {
+	return a.sort().filter(function(item, pos, ary) {
+		return !pos || item != ary[pos - 1];
+	})
+}
