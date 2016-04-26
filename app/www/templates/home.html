@@ -1,7 +1,44 @@
-<ion-view title="Home">
-  <ion-content>
+<ion-view title="">
+  <ion-nav-bar class="bar bar-header bar-calm">
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
 
-    FEUP - LAPD - EZTrip
-    
+  <ion-content>
+    <div id="banner">
+      <img src = "img/logo.png" alt = "logo"/>
+    </div>
+
+    <div id="services_buttons">
+      <div class="row">
+        <a href="#/app/favorites" class = "service_btn orange_bg">
+          <i class="ion-star"></i>
+          <p><small>Favorites</small></p>
+        </a>
+        <a href="#/app/agencies" class = "service_btn black_bg">
+          <i class="ion-home"></i>
+          <p><small>Agencies</small></p>
+        </a>
+        <a href="#/app/schedules" class = "service_btn salmon_bg">
+          <i class="ion-clock"></i>
+          <p><small>Schedules</small></p>
+        </a>
+      </div>
+
+      <div class="row">
+        <a href="#/app/search" class = "service_btn blue_bg">
+          <i class="ion-search"></i>
+          <p><small>Search</small></p>
+        </a>
+        <a href="#/app/tripplanner" class = "service_btn red_bg">
+          <i class="ion-calendar"></i>
+          <p><small>Trip Planner</small></p>
+        </a>
+        <a href="#/app/map" class = "service_btn green_bg">
+          <i class="ion-map"></i>
+          <p><small>Map</small></p>
+        </a>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>
