@@ -1,20 +1,4 @@
 @charset "UTF-8";
-/*
-To customize the look and feel of Ionic, you can override the variables
-in ionic's _variables.scss file.
-
-For example, you might change some of the default colors:
-
-$light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
-$positive:                        #387ef5 !default;
-$calm:                            #11c1f3 !default;
-$balanced:                        #33cd5f !default;
-$energized:                       #ffc900 !default;
-$assertive:                       #ef473a !default;
-$royal:                           #886aea !default;
-$dark:                            #444 !default;
-*/
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -9731,54 +9715,67 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-ion-content {
-  background: url(../img/banner.jpg) repeat-y center center; }
-
-#banner {
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  color: #fff;
-  text-align: center; }
-  #banner img {
-    max-width: 20%;
-    margin: 5% 0; }
-
-#services_buttons {
-  width: 100%;
-  background: #ffffff;
-  margin-top: 20px; }
-  #services_buttons .row {
-    padding: 0;
-    margin: 0; }
-  #services_buttons .service_btn {
-    width: 33.33333%;
-    display: inline-block;
-    text-align: center;
-    padding: 15px 0;
+/* menu */
+#left-side-menu {
+  background: grey; }
+  #left-side-menu ion-item {
     color: white;
-    text-decoration: none;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out; }
-    #services_buttons .service_btn i {
-      font-size: 3em; }
-    #services_buttons .service_btn p {
-      text-transform: uppercase;
+    background: transparent;
+    border-color: black; }
+    #left-side-menu ion-item i {
+      font-size: 1.2em;
+      color: black; }
+    #left-side-menu ion-item a {
+      background: transparent;
+      font-weight: bold; }
+
+/* homepage */
+#homepage {
+  background: url(../img/banner.jpg) repeat-y center center; }
+  #homepage #banner {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #fff;
+    text-align: center; }
+    #homepage #banner img {
+      max-width: 20%;
+      margin: 5% 0; }
+  #homepage #services_buttons {
+    width: 100%;
+    background: #ffffff;
+    margin-top: 20px; }
+    #homepage #services_buttons .row {
+      padding: 0;
       margin: 0; }
-    #services_buttons .service_btn:hover, #services_buttons .service_btn:active {
-      color: #000;
-      background: white !important; }
-    #services_buttons .service_btn.red_bg {
-      background: #EB1C24; }
-    #services_buttons .service_btn.blue_bg {
-      background: #0093D8; }
-    #services_buttons .service_btn.black_bg {
-      background: black; }
-    #services_buttons .service_btn.orange_bg {
-      background: darkorange; }
-    #services_buttons .service_btn.salmon_bg {
-      background: lightsalmon; }
-    #services_buttons .service_btn.green_bg {
-      background: forestgreen; }
+    #homepage #services_buttons .service_btn {
+      width: 33.33333%;
+      display: inline-block;
+      text-align: center;
+      padding: 15px 0;
+      color: white;
+      text-decoration: none;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out; }
+      #homepage #services_buttons .service_btn i {
+        font-size: 3em; }
+      #homepage #services_buttons .service_btn p {
+        text-transform: uppercase;
+        margin: 0; }
+      #homepage #services_buttons .service_btn:hover, #homepage #services_buttons .service_btn:active {
+        color: #000;
+        background: white !important; }
+      #homepage #services_buttons .service_btn.red_bg {
+        background: #EB1C24; }
+      #homepage #services_buttons .service_btn.blue_bg {
+        background: #0093D8; }
+      #homepage #services_buttons .service_btn.black_bg {
+        background: black; }
+      #homepage #services_buttons .service_btn.orange_bg {
+        background: darkorange; }
+      #homepage #services_buttons .service_btn.salmon_bg {
+        background: lightsalmon; }
+      #homepage #services_buttons .service_btn.green_bg {
+        background: forestgreen; }
