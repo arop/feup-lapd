@@ -9717,9 +9717,12 @@ a.button {
 
 /* menu */
 #left-side-menu {
-  background: grey; }
+  background: rgba(128, 128, 128, 0.48); }
+  #left-side-menu ion-item:first-child {
+    background: grey;
+    color: white; }
   #left-side-menu ion-item {
-    color: white;
+    color: black;
     background: transparent;
     border-color: black; }
     #left-side-menu ion-item i {
@@ -9731,14 +9734,17 @@ a.button {
 
 /* homepage */
 #homepage {
-  background: url(../img/banner.jpg) repeat-y center center; }
+  background: url(../img/banner.jpg) repeat-y center center;
+  top: 0 !important;
+  z-index: 1000; }
   #homepage #banner {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: #fff;
-    text-align: center; }
+    text-align: center;
+    margin-top: 10%; }
     #homepage #banner img {
       max-width: 20%;
       margin: 5% 0; }
@@ -9779,3 +9785,13 @@ a.button {
         background: lightsalmon; }
       #homepage #services_buttons .service_btn.green_bg {
         background: forestgreen; }
+
+/* agencies */
+#agencies ion-list ion-item {
+  text-align: center;
+  border: none; }
+  #agencies ion-list ion-item:nth-child(2n) {
+    background: rgba(128, 128, 128, 0.08); }
+  #agencies ion-list ion-item a {
+    text-decoration: none;
+    color: black; }
