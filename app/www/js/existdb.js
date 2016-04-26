@@ -93,7 +93,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 		var url = base_url + "/stops-by-route.xql?";
 
-		url += "id=" + $stateParams.id;
+		url += "route_id=" + $stateParams.id;
 
 		$http.get(url).success( function(response) {
 			var x2js = new X2JS();
