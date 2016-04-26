@@ -51,8 +51,21 @@ angular.module('lapd.existdb', ['ngCordova'])
 					var prev_seq = stoptimes_temp[stoptime].previous_stop._stop_sequence;
 					var next_seq = stoptimes_temp[stoptime].next_stop._stop_sequence;
 					var want_seq = stoptimes_temp[stoptime].wanted_stop._stop_sequence;
+					
+					var prev_time_split = stoptimes_temp[stoptime].previous_stop.__text.split(':');
+					var prev_time = new Date(2000, 0, 1, prev_time_split[0], prev_time_split[1], prev_time_split[2], 0).getTime();
 
-					stoptimes.push(stoptimes_temp[stoptime].previous_stop.__text + ' - previous stop');
+					var next_time_split = stoptimes_temp[stoptime].next_stop.__text.split(':');
+					var next_time = new Date(2000, 0, 1, next_time_split[0], next_time_split[1], next_time_split[2], 0).getTime();
+
+					var factor = (want_seq - prev_seq) / (next_seq - prev_seq);
+					var time_dif = next_time - prev_time;
+
+					var want_time = new Date(prev_time + factor * time_dif);
+
+					stoptimes.push(
+						(want_time.getHours() > 9 ? '' : '0') + want_time.getHours() + ':' +
+						(want_time.getMinutes() > 9 ? '' : '0') + want_time.getMinutes() + ':00' + ' ~');
 				}
 			}
 			$scope.schedule = uniq(stoptimes);
