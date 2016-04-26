@@ -21,10 +21,15 @@ $blue: #0093D8;
 
 /* menu */
 #left-side-menu {
-  background: grey;
+  background: rgba(128, 128, 128, 0.48);
+
+  ion-item:first-child {
+    background: grey;
+    color: white;
+  }
 
   ion-item {
-    color: white;
+    color: black;
     background: transparent;
     border-color: black;
 
@@ -43,6 +48,8 @@ $blue: #0093D8;
 /* homepage */
 #homepage {
   background: url(../img/banner.jpg) repeat-y center center;
+  top: 0 !important;
+  z-index: 1000;
 
   #banner {
     -webkit-background-size: cover;
@@ -51,6 +58,7 @@ $blue: #0093D8;
     background-size: cover;
     color: #fff;
     text-align: center;
+    margin-top: 10%;
 
     img {
       max-width: 20%;
@@ -109,6 +117,25 @@ $blue: #0093D8;
       }
       &.green_bg {
         background: forestgreen;
+      }
+    }
+  }
+}
+
+/* agencies */
+#agencies {
+  ion-list {
+    ion-item {
+      text-align: center;
+      border: none;
+
+      &:nth-child(2n) {
+        background: rgba(128, 128, 128, 0.08);
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
       }
     }
   }
