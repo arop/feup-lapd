@@ -1,0 +1,9 @@
+<ion-view title="{{route.route_short_name}} - {{route.route_long_name}}" data-ng-init="getStopsOfRoute()">
+<ion-content>
+	<ion-list>
+	  <ion-item ng-repeat="s in stops" ui-sref="app.stop({id: s.id})">
+	  	{{s}}
+	  </ion-item>
+	</ion-list>
+</ion-content>
+</ion-view>
