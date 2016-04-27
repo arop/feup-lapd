@@ -19,11 +19,34 @@ $blue: #0093D8;
 
 // styles
 
-/* menu */
+/* general */
+ion-list {
+  ion-item {
+    border: none;
+    @include animation();
+
+    &:nth-child(2n) {
+      background: rgba(128, 128, 128, 0.08);
+    }
+
+    &:hover,
+    &:active {
+      background: lightgrey;
+    }
+
+    a {
+      background-color: transparent !important;
+      text-decoration: none;
+      color: black;
+    }
+  }
+}
+
 div.title {
   text-align: center !important;
 }
 
+/* menu */
 #left-side-menu {
   background: rgba(128, 128, 128, 0.48);
 
@@ -128,27 +151,7 @@ div.title {
 
 /* agencies */
 #agencies_view {
-  ion-list {
-    ion-item {
-      text-align: center;
-      border: none;
-      @include animation();
 
-      &:nth-child(2n) {
-        background: rgba(128, 128, 128, 0.08);
-      }
-
-      &:hover,
-      &:active {
-        background: lightgrey;
-      }
-
-      a {
-        text-decoration: none;
-        color: black;
-      }
-    }
-  }
 }
 
 /* search */
@@ -157,5 +160,37 @@ div.title {
     right: 45px;
     position: absolute;
     top: 0;
+  }
+
+  hr {
+    width: 20%;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid lightgrey;
+  }
+
+  .row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  label.col-25 {
+    padding: 0;
+
+    select {
+      max-width: 100%;
+      padding-left: 0;
+    }
+  }
+
+  .resultsContainer {
+    margin-top: 3em;
+
+    h1 {
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+      color: $blue;
+    }
   }
 }

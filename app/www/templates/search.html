@@ -1,52 +1,50 @@
 <ion-view title="Search" ng-init="getPos()">
-<ion-content id = "search">
-	<div class="list list-inset">
+  <ion-content id = "search">
+    <div class="list row">
+      <label class="item item-input col-75">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="search.text" ng-keyup="$event.keyCode == 13 && search()">
+      </label>
+      <label class="item item-input item-select col-25">
+        <select ng-model="search.by" ng-init="search.by = searchOptions[0]" ng-options="option for option in searchOptions">
+        </select>
+      </label>
+    </div>
 
-	  <label class="item item-input item-select">
-	    <div class="input-label">
-	      Search by
-	    </div>
-	    <select ng-model="search.by" ng-init="search.by = searchOptions[0]" ng-options="option for option in searchOptions">
-	    </select>
-	  </label>
+    <hr/>
 
-    <label class="item item-input item-select">
-      <div class="input-label">
-        Range (Km)
-      </div>
-      <ionic-numberpicker input-obj="numberPickerObject">
-        <button class="button button-icon button-clear" ng-show="hasPosition">
-          <span ng-bind-html="range"></span>
-        </button>
-      </ionic-numberpicker>
-    </label>
+    <div class="list row">
+      <label class="item item-input item-select col">
+        <div class="input-label">
+          Range (Km)
+        </div>
+        <ionic-numberpicker input-obj="numberPickerObject">
+          <button class="button button-icon button-clear" ng-show="hasPosition">
+            <span ng-bind-html="range"></span>
+          </button>
+        </ionic-numberpicker>
+      </label>
+    </div>
 
-	  <label class="item item-input">
-	    <i class="icon ion-search placeholder-icon"></i>
-	    <input type="text" placeholder="Search" ng-model="search.text" ng-keyup="$event.keyCode == 13 && search()">
-	  </label>
+    <div class="resultsContainer" ng-if="showNearStops">
+      <h1>Stops near you</h1>
+      <ion-list>
+        <ion-item ng-repeat="s in stops" ui-sref="app.stop({id: s.id})">
+          {{s.stop_name}}
+        </ion-item>
+      </ion-list>
+    </div>
 
-	</div>
-
-	<div ng-if="showNearStops">
-		<h1>Stops near you</h1>
-		<ion-list>
-		  <ion-item ng-repeat="s in stops" ui-sref="app.stop({id: s.id})">
-		  	{{s.stop_name}}
-		  </ion-item>
-		</ion-list>
-	</div>
-
-	<div ng-if="showResults">
-		<h1>Search results</h1>
-		<ion-list>
-		  <ion-item ng-repeat="s in searchResultStops" ng-click="viewStop(s)" ng-if="search.by == searchOptions[0]">
-		  	{{s.stop_name}}
-		  </ion-item> <!-- ui-sref="app.stop({id: s.id})" -->
-		  <ion-item ng-repeat="s in searchResultRoutes" ng-click="viewRoute(s)" ng-if="search.by == searchOptions[1]">
-		  	{{s.route_short_name}} - {{s.route_long_name}}
-		  </ion-item>
-		</ion-list>
-	</div>
-</ion-content>
+    <div class="resultsContainer" ng-if="showResults">
+      <h1>Search results</h1>
+      <ion-list>
+        <ion-item ng-repeat="s in searchResultStops" ng-click="viewStop(s)" ng-if="search.by == searchOptions[0]">
+          {{s.stop_name}}
+        </ion-item> <!-- ui-sref="app.stop({id: s.id})" -->
+        <ion-item ng-repeat="s in searchResultRoutes" ng-click="viewRoute(s)" ng-if="search.by == searchOptions[1]">
+          {{s.route_short_name}} - {{s.route_long_name}}
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
 </ion-view>

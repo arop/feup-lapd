@@ -133,6 +133,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
 				$scope.searchResultStops = [].concat(json.result.stop);
+        $scope.showNearStops = false;
 				$scope.showResults = true;
 			});
 
@@ -144,6 +145,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
 				$scope.searchResultRoutes = [].concat(json.result.route);
+        $scope.showNearStops = false;
 				$scope.showResults = true;
 			});
 		}
@@ -183,9 +185,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var json = x2js.xml_str2json( response );
 			$scope.stops = json.result.stop;
 		});
-
-    $scope.showResults = false;
-    $scope.showNearStops = true;
 	};
 
 	$scope.numberPickerObject = {
@@ -196,7 +195,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    decimalStep: 0.1,  //Optional
 	    format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
 	    titleLabel: 'Range (km)',  //Optional
-	    setLabel: 'Set',  //Optional
+	    setLabel: 'Search',  //Optional
 	    closeLabel: 'Close',  //Optional
 	    setButtonType: 'button-calm',  //Optional
 	    closeButtonType: 'button-stable',  //Optional
@@ -206,9 +205,9 @@ angular.module('lapd.existdb', ['ngCordova'])
           $scope.range = 1.0;
         else
   	    	$scope.range = val;
-	    	/*$scope.getCloseStops();
+	    	$scope.getCloseStops();
 	    	$scope.showResults = false;
-	    	$scope.showNearStops = true;*/
+	    	$scope.showNearStops = true;
 	    }
 	};
 });
