@@ -50,7 +50,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.schedule = json.result.route;
-			
+
 			var stoptimes = [];
 			var stoptimes_temp = json.result.route.stoptime;
 			//console.log(stoptimes_temp);
@@ -63,7 +63,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 					var prev_seq = stoptimes_temp[stoptime].previous_stop._stop_sequence;
 					var next_seq = stoptimes_temp[stoptime].next_stop._stop_sequence;
 					var want_seq = stoptimes_temp[stoptime].wanted_stop._stop_sequence;
-					
+
 					var prev_time_split = stoptimes_temp[stoptime].previous_stop.__text.split(':');
 					var prev_time = new Date(2000, 0, 1, prev_time_split[0], prev_time_split[1], prev_time_split[2], 0).getTime();
 
@@ -135,7 +135,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 				$scope.searchResultStops = [].concat(json.result.stop);
 				$scope.showResults = true;
 			});
-			
+
 		} else if($scope.search.by === "Route") {
 			url = base_url + "/search-route-name.xql?";
 			url += "search=" + $scope.search.text;
@@ -183,6 +183,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var json = x2js.xml_str2json( response );
 			$scope.stops = json.result.stop;
 		});
+
+    $scope.showResults = false;
+    $scope.showNearStops = true;
 	};
 
 	$scope.numberPickerObject = {
@@ -193,19 +196,22 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    decimalStep: 0.1,  //Optional
 	    format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
 	    titleLabel: 'Range (km)',  //Optional
-	    setLabel: 'Search',  //Optional
+	    setLabel: 'Set',  //Optional
 	    closeLabel: 'Close',  //Optional
-	    setButtonType: 'button-positive',  //Optional
+	    setButtonType: 'button-calm',  //Optional
 	    closeButtonType: 'button-stable',  //Optional
 	    callback: function (val) {    //Mandatory
 	    	//timePickerCallback(val);
-	    	$scope.range = val;
-	    	$scope.getCloseStops();
+        if(val == undefined)
+          $scope.range = 1.0;
+        else
+  	    	$scope.range = val;
+	    	/*$scope.getCloseStops();
 	    	$scope.showResults = false;
-	    	$scope.showNearStops = true;
+	    	$scope.showNearStops = true;*/
 	    }
 	};
-})
+});
 
 
 function uniq(a) {

@@ -9792,9 +9792,20 @@ div.title {
 /* agencies */
 #agencies_view ion-list ion-item {
   text-align: center;
-  border: none; }
+  border: none;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; }
   #agencies_view ion-list ion-item:nth-child(2n) {
     background: rgba(128, 128, 128, 0.08); }
+  #agencies_view ion-list ion-item:hover, #agencies_view ion-list ion-item:active {
+    background: lightgrey; }
   #agencies_view ion-list ion-item a {
     text-decoration: none;
     color: black; }
+
+/* search */
+#search ionic-numberpicker {
+  right: 45px;
+  position: absolute;
+  top: 0; }

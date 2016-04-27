@@ -132,9 +132,15 @@ div.title {
     ion-item {
       text-align: center;
       border: none;
+      @include animation();
 
       &:nth-child(2n) {
         background: rgba(128, 128, 128, 0.08);
+      }
+
+      &:hover,
+      &:active {
+        background: lightgrey;
       }
 
       a {
@@ -142,5 +148,14 @@ div.title {
         color: black;
       }
     }
+  }
+}
+
+/* search */
+#search {
+  ionic-numberpicker {
+    right: 45px;
+    position: absolute;
+    top: 0;
   }
 }
