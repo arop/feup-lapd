@@ -42,11 +42,11 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
     }
   })
 
-  .state('app.map', {
-    url: '/map',
+  .state('app.uber', {
+    url: '/uber',
     views: {
       'menuContent': {
-        templateUrl: 'templates/map.html',
+        templateUrl: 'templates/uber.html',
         controller: 'MapCtrl'
       }
     }

@@ -1,6 +1,6 @@
 <ion-view title="Search" ng-init="getPos()">
   <ion-content id = "search">
-    <ion-toggle toggle-class="toggle-calm" ng-model="searchMode.checked" ng-checked="searchMode.checked" ng-change="clearResults()">
+    <ion-toggle id ="search_switch" toggle-class="toggle-calm" ng-model="searchMode.checked" ng-checked="searchMode.checked" ng-change="clearResults()">
       {{ searchMode.text }}
     </ion-toggle>
 

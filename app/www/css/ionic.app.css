@@ -9811,21 +9811,16 @@ div.title {
   position: absolute;
   top: 0; }
 
-#search hr {
-  width: 20%;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid lightgrey; }
-
 #search .row {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px; }
 
 #search label.col-25 {
   padding: 0; }
   #search label.col-25 select {
     max-width: 100%;
-    padding-left: 0; }
+    padding-left: 0;
+    padding-right: 40px; }
 
 #search .resultsContainer {
   margin-top: 3em; }
@@ -9834,3 +9829,9 @@ div.title {
     font-size: 20px;
     text-transform: uppercase;
     color: #0093D8; }
+
+#search #search_switch {
+  background-color: grey;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold; }
