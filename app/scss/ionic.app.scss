@@ -162,15 +162,8 @@ div.title {
     top: 0;
   }
 
-  hr {
-    width: 20%;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid lightgrey;
-  }
-
   .row {
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 10px;
   }
 
@@ -180,11 +173,56 @@ div.title {
     select {
       max-width: 100%;
       padding-left: 0;
+      padding-right: 40px;
     }
   }
 
   .resultsContainer {
     margin-top: 3em;
+
+    h1 {
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+      color: $blue;
+    }
+  }
+
+  #search_switch {
+    background-color: grey;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+}
+
+/* stop */
+#stop_view {
+  #top_info {
+    padding: 0;
+    margin-bottom: 30px;
+
+    .button {
+      border: none;
+      border-radius: 0;
+      color: white;
+
+      i {
+        font-size: 1.3em;
+      }
+
+      &:first-child {
+        background: grey;
+      }
+
+      &:last-child {
+        cursor: default !important;
+        background: black;
+      }
+    }
+  }
+
+  ion-list {
 
     h1 {
       text-align: center;
