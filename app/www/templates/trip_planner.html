@@ -1,0 +1,20 @@
+<ion-view title="Trip Planner">
+    <ion-content>
+        <button id="go-button" class="button icon icon-left ion-android-bus controls" ng-click="getTrip()">Go</button>
+        <div id="startMarkerDiv">
+        	<h4>start</h4>
+        	<p id="startLat"></p>
+        	<p id="startLon"></p>
+        </div>
+        <div id="endMarkerDiv">
+        	<h4>end</h4>
+        	<p id="endLat"></p>
+        	<p id="endLon"></p>
+        </div>
+
+    	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div style="height:100vh" id="tripplannermap" data-tap-disabled="true" ng-controller="TripPlannerMapCtrl"></div>
+        <div id="startMarker" hidden="true" lat="" lon=""></div>
+        <div id="endMarker" hidden="true" lat="" lon=""></div>
+    </ion-content>
+</ion-view>

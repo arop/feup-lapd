@@ -92,6 +92,16 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost','ionic-num
     }
   })
 
+  .state('app.tripplanner', {
+    url: '/tripplanner',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/trip_planner.html',
+        controller: 'TripPlannerController'
+      }
+    }
+  })
+
   .state('app.home', {
     url: '/home',
     views: {

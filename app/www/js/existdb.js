@@ -28,7 +28,11 @@ angular.module('lapd.existdb', ['ngCordova'])
 	if($scope.stop === undefined) $scope.stop = {};
 
 	$scope.getStop = function() {
-		/*var url = base_url + "/stop.xql?";
+		$scope.stop = currentStop.stop;
+	};
+
+	$scope.getStopFromExistdb = function() {
+		var url = base_url + "/stop.xql?";
 
 		url += "id=" + $stateParams.id;
 
@@ -37,8 +41,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var json = x2js.xml_str2json( response );
 			$scope.stop = json.result.stop;
 		});
-		*/
-		$scope.stop = currentStop.stop;
 	};
 
 	$scope.getStopSchedule = function() {
@@ -133,7 +135,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
 				$scope.searchResultStops = [].concat(json.result.stop);
-        $scope.showNearStops = false;
+				$scope.showNearStops = false;
 				$scope.showResults = true;
 			});
 
@@ -145,7 +147,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 				var x2js = new X2JS();
 				var json = x2js.xml_str2json( response );
 				$scope.searchResultRoutes = [].concat(json.result.route);
-        $scope.showNearStops = false;
+				$scope.showNearStops = false;
 				$scope.showResults = true;
 			});
 		}
@@ -201,10 +203,10 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    closeButtonType: 'button-stable',  //Optional
 	    callback: function (val) {    //Mandatory
 	    	//timePickerCallback(val);
-        if(val == undefined)
-          $scope.range = 1.0;
-        else
-  	    	$scope.range = val;
+	    	if(val == undefined)
+	    		$scope.range = 1.0;
+	    	else
+	    		$scope.range = val;
 	    	$scope.getCloseStops();
 	    	$scope.showResults = false;
 	    	$scope.showNearStops = true;
