@@ -31,7 +31,7 @@
     <div class="resultsContainer" ng-if="showNearStops">
       <h1>Stops near you</h1>
       <ion-list>
-        <ion-item ng-repeat="s in stops" ui-sref="app.stop({id: s.id})">
+        <ion-item ng-repeat="s in stops" ng-click="viewStop(s)">
           {{s.stop_name}}
         </ion-item>
       </ion-list>
