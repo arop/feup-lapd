@@ -1,6 +1,10 @@
 <ion-view title="Search" ng-init="getPos()">
   <ion-content id = "search">
-    <div class="list row">
+    <ion-toggle toggle-class="toggle-calm" ng-model="searchMode.checked" ng-checked="searchMode.checked" ng-change="clearResults()">
+      {{ searchMode.text }}
+    </ion-toggle>
+
+    <div class="list row" ng-show="searchMode.checked == false">
       <label class="item item-input col-75">
         <i class="icon ion-search placeholder-icon"></i>
         <input type="text" placeholder="Search" ng-model="search.text" ng-keyup="$event.keyCode == 13 && search()">
@@ -11,9 +15,7 @@
       </label>
     </div>
 
-    <hr/>
-
-    <div class="list row">
+    <div class="list row" ng-show="searchMode.checked == true">
       <label class="item item-input item-select col">
         <div class="input-label">
           Range (Km)

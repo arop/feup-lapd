@@ -210,6 +210,13 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    	$scope.showNearStops = true;
 	    }
 	};
+
+  $scope.searchMode = { text: "Stops Near You?", checked: true };
+
+  $scope.clearResults = function () {
+    $scope.showResults = false;
+    $scope.showNearStops = false;
+  }
 });
 
 
