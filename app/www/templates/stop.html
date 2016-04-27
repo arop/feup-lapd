@@ -1,14 +1,22 @@
-<ion-view title="{{stop.stop_name}}" data-ng-init="getStop()">
-<ion-content>
-	<h3 id="coord" lat="{{stop.point.coordinates[1]}}" lon="{{stop.point.coordinates[0]}}">Latitude: {{stop.point.coordinates[1]}} | Longitude: {{stop.point.coordinates[0]}}</h3>
-	<button class="button button-icon" ng-click="showMapBoolean=!showMapBoolean" ng-init="showMapBoolean=false">Show in map</button>
-	<h3>Distance (km): {{ stop.distance }}</h3>
-	<ion-list>
-	  <ion-item ng-repeat="route in stop._routes" ui-sref="app.stop.schedule({id: stop.id, route_id: route.id})">
-	  	{{route.route_short_name}}
-	  </ion-item>
-	</ion-list>
+<ion-view title="{{ stop.stop_name }}" data-ng-init="getStop()">
+  <ion-content id="stop_view">
+    <!--<h3 id="coord" lat="{{stop.point.coordinates[1]}}" lon="{{stop.point.coordinates[0]}}">Latitude: {{stop.point.coordinates[1]}} | Longitude: {{stop.point.coordinates[0]}}</h3>-->
+    <label class="row" id="top_info">
+      <button class = "button button-icon col col-50" ng-click="showMapBoolean=!showMapBoolean" ng-init="showMapBoolean=false">
+        <i class="ion-map"></i> Show in Map
+      </button>
+      <div class = "button col col-50">
+        <i class="ion-android-walk"></i> {{ stop.distance }}Km
+      </div>
+    </label>
 
-	<div style="height:70vh" id="stopmap" ng-if="showMapBoolean" data-tap-disabled="true" ng-controller="StopMapCtrl" ></div>
-</ion-content>
+    <ion-list>
+      <h1>Routes</h1>
+      <ion-item ng-repeat="route in stop._routes" ui-sref="app.stop.schedule({id: stop.id, route_id: route.id})">
+        {{route.route_short_name}} - {{ route.route_long_name}}
+      </ion-item>
+    </ion-list>
+
+    <div style="height:70vh" id="stopmap" ng-if="showMapBoolean" data-tap-disabled="true" ng-controller="StopMapCtrl" ></div>
+  </ion-content>
 </ion-view>
