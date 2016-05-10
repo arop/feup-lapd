@@ -1,3 +1,5 @@
+var markerEndGlobal; // used in trip planner
+
 angular.module('lapd.map', ['ngCordova'])
 
 .controller('MapCtrl', function($scope, $cordovaGeolocation) {
@@ -22,7 +24,7 @@ angular.module('lapd.map', ['ngCordova'])
           map: $scope.map,
           animation: google.maps.Animation.DROP,
           position: latLng
-        });      
+        });
 
         var infoWindow = new google.maps.InfoWindow({
           content: "You are here!"
@@ -95,12 +97,16 @@ angular.module('lapd.map', ['ngCordova'])
     });
 })
 
+
 .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
 
+  // start map after getting current position
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+    var geocoder = new google.maps.Geocoder;
 
     var mapOptions = {
       center: latLng,
@@ -110,7 +116,7 @@ angular.module('lapd.map', ['ngCordova'])
 
     $scope.map = new google.maps.Map(document.getElementById("tripplannermap"), mapOptions);
 
-    initAutocomplete($scope.map);
+    initAutocomplete($scope.map, markerEndGlobal, geocoder);
 
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
@@ -121,12 +127,12 @@ angular.module('lapd.map', ['ngCordova'])
           position: latLng
         });
 
-        var infoWindow = new google.maps.InfoWindow({
+        var infoWindowCurrent = new google.maps.InfoWindow({
           content: "You are here!"
         });
 
         google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open($scope.map, marker);
+          infoWindowCurrent.open($scope.map, marker);
         });
 
         var markerStart = new google.maps.Marker({
@@ -136,22 +142,58 @@ angular.module('lapd.map', ['ngCordova'])
           position: latLng
         });
 
-        var infoWindow1 = new google.maps.InfoWindow({
+        var infoWindowStart = new google.maps.InfoWindow({
           content: "Start here!"
         });
 
         google.maps.event.addListener(markerStart, 'click', function () {
-          infoWindow1.open($scope.map, markerStart);
-          document.getElementById('startLat').innerHTML = markerStart.position.lat();
-          document.getElementById('startLon').innerHTML = markerStart.position.lng();
+          infoWindowStart.open($scope.map, markerStart);
+
+          markerStart.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+
+          document.getElementById('startMarker').setAttribute("lat", marker.position.lat());
+          document.getElementById('startMarker').setAttribute("lon", marker.position.lng());
+
+          geocodeLatLng(geocoder, 'start');
         });
 
+      });
+
+      //Add or replace end marker on click
+      google.maps.event.addListener($scope.map, 'click', function(event) {
+        placeMarker(event.latLng, $scope.map);
+        geocodeLatLng(geocoder, 'end');
       });
 
     }, function(error){
       console.log("Could not get location");
     });
 })
+
+function placeMarker(location, map) {
+  if(markerEndGlobal != null) {
+    markerEndGlobal.setMap(null);
+  }
+
+  markerEndGlobal = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: "End trip here!"
+  });
+
+  google.maps.event.addListener(markerEndGlobal, 'click', function () {
+    infoWindow.open(map, markerEndGlobal);
+  });
+  
+  markerEndGlobal.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+
+  document.getElementById('endMarker').setAttribute("lat", markerEndGlobal.position.lat());
+  document.getElementById('endMarker').setAttribute("lon", markerEndGlobal.position.lng());
+}
+
 
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -162,7 +204,7 @@ function callback(results, status) {
   }
 }
 
-function initAutocomplete(map) {
+function initAutocomplete(map, currentEndMarker, geocoder) {
   // Create the search box and link it to the UI element.
   var input = document.getElementById('pac-input');
   var searchBox = new google.maps.places.SearchBox(input);
@@ -201,17 +243,17 @@ function initAutocomplete(map) {
       });
 
       var infoWindow = new google.maps.InfoWindow({
-        content: "Get here!"
+        content: "End trip here!"
       });
-
 
       google.maps.event.addListener(markerEnd, 'click', function () {
         infoWindow.open(map, markerEnd);
         document.getElementById('endMarker').setAttribute("lat", markerEnd.position.lat());
         document.getElementById('endMarker').setAttribute("lon", markerEnd.position.lng());
 
-        document.getElementById('endLat').innerHTML = markerEnd.position.lat();
-        document.getElementById('endLon').innerHTML = markerEnd.position.lng();
+        currentEndMarker = markerEnd;
+        currentEndMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+        geocodeLatLng(geocoder, 'end');
       });
 
       // Create a marker for each place.
@@ -228,3 +270,42 @@ function initAutocomplete(map) {
     map.fitBounds(bounds);
   });
 }
+
+
+/**
+* Display street name where marker is set
+*/
+function geocodeLatLng(geocoder, startOrEnd) {
+  var lat = "";
+  var lon = "";
+
+  if(startOrEnd === 'start') {
+    lat = document.getElementById('startMarker').getAttribute("lat");
+    lon = document.getElementById('startMarker').getAttribute("lon");
+  } else {
+    lat = document.getElementById('endMarker').getAttribute("lat");
+    lon = document.getElementById('endMarker').getAttribute("lon");
+  }
+
+  var latlng = {lat: parseFloat(lat), lng: parseFloat(lon)};
+
+  geocoder.geocode({'location': latlng}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        if(startOrEnd === 'start') {
+          document.getElementById('startName').innerHTML = results[0].formatted_address;
+        } else {
+          document.getElementById('endName').innerHTML = results[0].formatted_address;
+        }
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
+
+
+
