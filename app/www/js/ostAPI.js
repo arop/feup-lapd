@@ -1,10 +1,17 @@
 var base_url_ost = "https://api.ost.pt/";
 
+//var globalTrips = {};
+
 angular.module('lapd.ost', ['ngCordova'])
 
-.controller('TripPlannerController', function ($scope, $http, $state) {
+.controller('TripPlannerController', function ($scope, $http, $state, currentTrip) {
+	//$scope.trips = {};
 
-	this.trip = {};
+	$scope.showTrip = function () {
+		console.log("show trip");
+		console.log(currentTrip.trips);
+		$scope.trips = currentTrip.trips;
+	};
 
 	$scope.getTrip = function() {
 
@@ -16,9 +23,7 @@ angular.module('lapd.ost', ['ngCordova'])
 
 		var url = base_url_ost + 'trips/plan/';
 		url += '?optimize=QUICK';
-
 		url += '&time=' + encodeURIComponent(strftimeHere('%T %P', d));
-
 		url += '&arriveBy=false';
 
 		var startLat = document.getElementById('startMarker').getAttribute("lat");
@@ -29,25 +34,20 @@ angular.module('lapd.ost', ['ngCordova'])
 
 		url += '&fromPlace=' + startLat + '%2C' + startLon;
 		url += '&toPlace=' + endLat + '%2C' + endLon;
-
 		url += '&date=' + encodeURIComponent(strftimeHere('%F', d));
-
 		url += '&mode=TRANSIT%2CWALK';
-
 		url += '&key=wOfLniMzlmTPRoUSOLmLWVyyWpnnNotUsisSFTTF';
 
 		$http.get(url).success( function(response) {
-			trip = response.Objects;
+			currentTrip.trips = response.Objects[0].itineraries;
 
 			$state.go('app.tripplanner.show');
-
-			console.log(url);
-			console.log(response);
 		});
 	};
 
-	$scope.showTrip = function () {
-		console.log(trip);
-		$scope.trip = trip;
-	};
-});
+})
+
+.service('currentTrip', function () {
+	var currentTrip = this;
+	currentTrip.trips = {};
+})
