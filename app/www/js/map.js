@@ -157,13 +157,25 @@ angular.module('lapd.map', ['ngCordova'])
           geocodeLatLng(geocoder, 'start');
         });
 
+        google.maps.event.addListener( markerStart, 'dragend', function(){
+          google.maps.event.trigger(this, 'click');} );
+
       });
 
       //Add or replace end marker on click
       google.maps.event.addListener($scope.map, 'click', function(event) {
         placeMarker(event.latLng, $scope.map);
         geocodeLatLng(geocoder, 'end');
+
+        google.maps.event.addListener( markerEndGlobal, 'dragend', function(){
+          google.maps.event.trigger(this, 'click');
+          document.getElementById('endMarker').setAttribute("lat", markerEndGlobal.position.lat());
+          document.getElementById('endMarker').setAttribute("lon", markerEndGlobal.position.lng());
+          geocodeLatLng(geocoder, 'end');
+        } );
+
       });
+
 
     }, function(error){
       console.log("Could not get location");
@@ -177,7 +189,9 @@ function placeMarker(location, map) {
 
   markerEndGlobal = new google.maps.Marker({
     position: location,
-    map: map
+    map: map,
+    draggable: true,
+    animation: google.maps.Animation.DROP
   });
 
   var infoWindow = new google.maps.InfoWindow({
@@ -187,7 +201,7 @@ function placeMarker(location, map) {
   google.maps.event.addListener(markerEndGlobal, 'click', function () {
     infoWindow.open(map, markerEndGlobal);
   });
-  
+
   markerEndGlobal.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
 
   document.getElementById('endMarker').setAttribute("lat", markerEndGlobal.position.lat());
@@ -255,6 +269,9 @@ function initAutocomplete(map, currentEndMarker, geocoder) {
         currentEndMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
         geocodeLatLng(geocoder, 'end');
       });
+
+      google.maps.event.addListener( markerEnd, 'dragend', function(){
+        google.maps.event.trigger(this, 'click');} );
 
       // Create a marker for each place.
       markers.push(markerEnd);

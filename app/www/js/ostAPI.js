@@ -8,8 +8,8 @@ angular.module('lapd.ost', ['ngCordova'])
 	//$scope.trips = {};
 
 	$scope.showTrip = function () {
-		console.log("show trip");
-		console.log(currentTrip.trips);
+		//console.log("show trip");
+		//console.log(currentTrip.trips);
 		$scope.trips = currentTrip.trips;
 	};
 
@@ -40,6 +40,8 @@ angular.module('lapd.ost', ['ngCordova'])
 
 		$http.get(url).success( function(response) {
 			currentTrip.trips = response.Objects[0].itineraries;
+
+			//console.log(response);
 
 			$state.go('app.tripplanner.show');
 		});

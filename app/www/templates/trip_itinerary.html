@@ -2,8 +2,10 @@
 <ion-content>
 	<ion-list>
 		<ion-item ng-repeat="trip in trips">
-			<p>walk time: {{trip.walkTime}}</p>
-			<p>walk distance: {{trip.walkDistance}}</p>
+			<p>walk time: {{trip.walkTime / 60 | number: 2}}min</p>
+			<p>walk distance: {{trip.walkDistance | number: 2}}m</p>
+			<p>waiting time: {{trip.waitingTime}}min</p>
+			<p>transfers: {{trip.transfers}}</p>
 
 			<ion-list>
 				<ion-item ng-repeat="step in trip.legs[0].steps">

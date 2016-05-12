@@ -1,3 +1,5 @@
 .idea/
 node_modules/
 app/.*
+app/ionic.project
+app/.io-config.json
