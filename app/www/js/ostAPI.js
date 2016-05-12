@@ -4,18 +4,13 @@ var base_url_ost = "https://api.ost.pt/";
 
 angular.module('lapd.ost', ['ngCordova'])
 
-.controller('TripPlannerController', function ($scope, $http, $state, currentTrip) {
-	//$scope.trips = {};
+.controller('TripPlannerController', function ($scope, $http, $state, currentTrip, TripValuesInTripplanner) {
 
 	$scope.showTrip = function () {
-		//console.log("show trip");
-		//console.log(currentTrip.trips);
 		$scope.trips = currentTrip.trips;
 	};
 
 	$scope.getTrip = function() {
-
-		//var strftime = require('strftime') //not required in browsers
 
 		var d = new Date();
 		var n = d.getTimezoneOffset();
@@ -41,7 +36,7 @@ angular.module('lapd.ost', ['ngCordova'])
 		$http.get(url).success( function(response) {
 			currentTrip.trips = response.Objects[0].itineraries;
 
-			//console.log(response);
+			TripValuesInTripplanner.setValue(startLat,startLon,endLat,endLon);
 
 			$state.go('app.tripplanner.show');
 		});
@@ -53,3 +48,19 @@ angular.module('lapd.ost', ['ngCordova'])
 	var currentTrip = this;
 	currentTrip.trips = {};
 })
+
+.service('TripValuesInTripplanner', function() {
+	var tripValues = this;
+	tripValues = {};
+
+    this.getTrip = function() {
+        return tripValues;
+    };
+
+    this.setValue = function(beginLat,beginLon,endLat,endLon) {
+        tripValues.beginLat = beginLat;
+        tripValues.beginLon = beginLon;
+        tripValues.endLat = endLat;
+        tripValues.endLon = endLon;
+    }
+});

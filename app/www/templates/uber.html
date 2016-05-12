@@ -1,4 +1,4 @@
-<ion-view title="Uber">
+<ion-view title="Uber" data-ng-init="getEstimates()">
 <ion-content>
 
 	<button class="button button-icon button-clear" ng-click="getProducts()">
@@ -13,6 +13,22 @@
               <h2>{{p.display_name}}</h2>
               <p>{{p.description}}</p>
             </div>
+          </ion-item>
+        </ion-list>
+	</div>
+
+	<div ng-show="showEstimate">
+		<h1>Trip estimate</h1>
+		<div>
+			<h4>From: <span id="startNameTripUber"></span></h4>
+			<h4>To: <span id="endNameTripUber"></span></h4>
+		</div>
+		<ion-list>
+          <ion-item ng-repeat="e in estimates">
+              	<h2>{{e.display_name}}</h2>
+              	<p>Price estimate: {{e.estimate}}</p>
+				<p>Aproximate distance: {{e.distance * 1.609344 | number: 3}}km</p>
+				<p>Aproximate time: {{e.duration / 60 | number: 0}}min</p>
           </ion-item>
         </ion-list>
 	</div>

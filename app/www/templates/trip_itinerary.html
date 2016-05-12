@@ -1,5 +1,9 @@
 <ion-view title="Trip" data-ng-init="showTrip()">
 <ion-content>
+	<button class="button button-full button-stable icon-left ion-model-s" ui-sref="app.uber">
+		Get uber estimate
+	</button>
+
 	<ion-list>
 		<ion-item ng-repeat="trip in trips">
 			<p>walk time: {{trip.walkTime / 60 | number: 2}}min</p>
@@ -11,7 +15,6 @@
 				<ion-item ng-repeat="step in trip.legs[0].steps">
 					{{step}}
 				</ion-item>
-
 			</ion-list>
 				
 		</ion-item>
