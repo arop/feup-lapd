@@ -1,5 +1,21 @@
 <ion-view title="Uber">
-    <ion-content>
-        <!--<div id="map" data-tap-disabled="true"></div>-->
-    </ion-content>
+<ion-content>
+
+	<button class="button button-icon button-clear" ng-click="getProducts()">
+		Get uber products
+	</button>
+
+	<div ng-if="showUberProducts">
+		<ion-list class="card">
+          <ion-item class="item-avatar" ng-repeat="p in uberProducts">
+            <div class="item-content">
+              <img ng-src="{{p.image}}">
+              <h2>{{p.display_name}}</h2>
+              <p>{{p.description}}</p>
+            </div>
+          </ion-item>
+        </ion-list>
+	</div>
+
+</ion-content>
 </ion-view>
