@@ -112,6 +112,16 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.ube
     }
   })
 
+  .state('app.tripplanner.show.steps', {
+    url: '/steps/:index',
+    views: {
+      'menuContent@app': {
+        templateUrl: 'templates/trip_steps.html',
+        controller: 'TripPlannerController'
+      }
+    }
+  })
+
   .state('app.home', {
     url: '/home',
     views: {

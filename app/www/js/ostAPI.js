@@ -4,11 +4,16 @@ var base_url_ost = "https://api.ost.pt/";
 
 angular.module('lapd.ost', ['ngCordova'])
 
-.controller('TripPlannerController', function ($scope, $http, $state, currentTrip, TripValuesInTripplanner) {
+.controller('TripPlannerController', function ($scope, $http, $state, currentTrip, TripValuesInTripplanner, $stateParams) {
 
 	$scope.showTrip = function () {
 		$scope.trips = currentTrip.trips;
 	};
+
+	$scope.showTripSteps = function(){
+		$scope.trip = currentTrip.trips[$stateParams.index];
+	};
+
 
 	$scope.getTrip = function() {
 
