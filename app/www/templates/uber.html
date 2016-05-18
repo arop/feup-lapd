@@ -1,8 +1,11 @@
 <ion-view title="Uber" data-ng-init="getEstimates()">
 	<ion-content>
 		<div ng-show="showEstimate">
-			<h1>Trip estimate</h1>
-			<div class="list">
+			<ion-list>
+				<div class="item item-divider">
+					Trip
+				</div>
+
 				<label class="item item-input item-stacked-label">
 					<span class="input-label">From</span>
 					<!--<span class="input" id="startNameTripUber"></span>-->
@@ -13,9 +16,11 @@
 					<!--<span class="input" id="endNameTripUber"></span>-->
 					<input type="text" placeholder="To" id="endNameTripUber" readonly>
 				</label>
-			</div>
 
-			<ion-list>
+				<div class="item item-divider">
+					Available options
+				</div>
+
 				<ion-item ng-repeat="e in estimates">
 					<h2>{{e.display_name}}</h2>
 					<p>Price estimate: {{e.estimate}}</p>

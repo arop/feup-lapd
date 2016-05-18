@@ -27,7 +27,7 @@ angular.module('lapd.ost', ['ngCordova'])
 
 		var url = base_url_ost + 'trips/plan/';
 		url += '?optimize=QUICK';
-		url += '&time=' + encodeURIComponent(strftimeHere('%T %P', d));
+		url += '&time=' + encodeURIComponent(strftimeHere('%T%P', d));
 		url += '&arriveBy=false';
 
 		var startLat = document.getElementById('startMarker').getAttribute("lat");
@@ -50,6 +50,9 @@ angular.module('lapd.ost', ['ngCordova'])
 			TripValuesInTripplanner.setValue(startLat,startLon,endLat,endLon);
 
 			$state.go('app.tripplanner.show');
+		}).error( function (response) {
+			console.log(response);
+			$ionicLoading.hide();
 		});
 	};
 
