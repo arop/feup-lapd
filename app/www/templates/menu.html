@@ -1,5 +1,4 @@
 <ion-side-menus enable-menu-with-back-views="false" >
-  <!-- ng-controller="MenuController as m" -->
   <!-- Center content -->
   <ion-side-menu-content>
     <ion-nav-bar class="bar-calm">
@@ -10,14 +9,6 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
-
-      <!--<ion-nav-buttons side="right">
-        <span class="button button-small">
-            <i class="icon ion-search placeholder-icon"></i>
-        </span>
-      </ion-nav-buttons>
-      <search-bar ng-model="search"></search-bar>-->
-
 
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -36,20 +27,14 @@
         <ion-item menu-close href="#/app/favorites">
           <i class="ion-star"></i>  Favorites
         </ion-item>
-        <ion-item menu-close href="#/app/agencies">
-          <i class="ion-home"></i>  Agencies
-        </ion-item>
-        <ion-item menu-close href="#/app/schedules">
-          <i class="ion-clock"></i>  Schedules
-        </ion-item>
         <ion-item menu-close href="#/app/search">
           <i class="ion-search"></i>  Search
         </ion-item>
         <ion-item menu-close href="#/app/tripplanner">
           <i class="ion-calendar"></i>  Trip Planner
         </ion-item>
-        <ion-item menu-close href="#/app/uber">
-          <i class="ion-model-s"></i>  Uber
+        <ion-item menu-close href="#/app/agencies">
+          <i class="ion-home"></i>  Agencies
         </ion-item>
         <ion-item menu-close href="#/app/help">
           <i class="ion-help"></i>  Help

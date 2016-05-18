@@ -1,10 +1,8 @@
 var base_url_ost = "https://api.ost.pt/";
 
-//var globalTrips = {};
-
 angular.module('lapd.ost', ['ngCordova'])
 
-.controller('TripPlannerController', function ($scope, $http, $state, currentTrip, TripValuesInTripplanner, $stateParams) {
+.controller('TripPlannerController', function ($scope, $http, $state, $stateParams, $ionicLoading, currentTrip, TripValuesInTripplanner) {
 
 	$scope.showTrip = function () {
 		$scope.trips = currentTrip.trips;
@@ -14,8 +12,14 @@ angular.module('lapd.ost', ['ngCordova'])
 		$scope.trip = currentTrip.trips[$stateParams.index];
 	};
 
-
 	$scope.getTrip = function() {
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
 
 		var d = new Date();
 		var n = d.getTimezoneOffset();
@@ -41,6 +45,8 @@ angular.module('lapd.ost', ['ngCordova'])
 		$http.get(url).success( function(response) {
 			currentTrip.trips = response.Objects[0].itineraries;
 
+			$ionicLoading.hide();
+
 			TripValuesInTripplanner.setValue(startLat,startLon,endLat,endLon);
 
 			$state.go('app.tripplanner.show');
@@ -58,14 +64,14 @@ angular.module('lapd.ost', ['ngCordova'])
 	var tripValues = this;
 	tripValues = {};
 
-    this.getTrip = function() {
-        return tripValues;
-    };
+	this.getTrip = function() {
+		return tripValues;
+	};
 
-    this.setValue = function(beginLat,beginLon,endLat,endLon) {
-        tripValues.beginLat = beginLat;
-        tripValues.beginLon = beginLon;
-        tripValues.endLat = endLat;
-        tripValues.endLon = endLon;
-    }
+	this.setValue = function(beginLat,beginLon,endLat,endLon) {
+		tripValues.beginLat = beginLat;
+		tripValues.beginLon = beginLon;
+		tripValues.endLat = endLat;
+		tripValues.endLon = endLon;
+	}
 });

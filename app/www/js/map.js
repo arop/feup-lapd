@@ -58,7 +58,6 @@ angular.module('lapd.map', ['ngCordova'])
 
     $scope.map = new google.maps.Map(document.getElementById("stopmap"), mapOptions);
 
-
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
@@ -322,7 +321,4 @@ function geocodeLatLng(geocoder, startOrEnd) {
     }
   });
 }
-
-
-
 

@@ -3,14 +3,25 @@ var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
 
 angular.module('lapd.existdb', ['ngCordova'])
 
-.controller('AgenciesController', function($scope, $http){
+.controller('AgenciesController', function($scope, $http, $ionicLoading){
 	var url = base_url + "/agencies.xql";
 
+	$ionicLoading.show({
+		content: 'Loading',
+		animation: 'fade-in',
+		showBackdrop: true,
+		maxWidth: 200,
+		showDelay: 0
+	});
+
 	$http.get(url).success( function(response) {
+
 		var x2js = new X2JS();
 		var json = x2js.xml_str2json( response );
 
 		$scope.agencies = json.result.agency;
+
+		$ionicLoading.hide();
 	});
 })
 
@@ -24,7 +35,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	currentRoute.route = {};
 })
 
-.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, currentStop){
+.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, $ionicLoading, currentStop){
 	if($scope.stop === undefined) $scope.stop = {};
 
 	$scope.getStop = function() {
@@ -32,6 +43,15 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getStopFromExistdb = function() {
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+
+
 		var url = base_url + "/stop.xql?";
 
 		url += "id=" + $stateParams.id;
@@ -40,10 +60,20 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.stop = json.result.stop;
+
+			$ionicLoading.hide();
 		});
 	};
 
 	$scope.getStopSchedule = function() {
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+
 		var url = base_url + "/stop-route-schedule.xql?";
 
 		url += "stop_id=" + $stateParams.id + "&route_id=" + $stateParams.route_id;
@@ -84,11 +114,14 @@ angular.module('lapd.existdb', ['ngCordova'])
 			}
 			$scope.schedule = uniq(stoptimes);
 			//console.log($scope.schedule);
+
+			$ionicLoading.hide();
+
 		});
 	};
 })
 
-.controller('RoutesController', function($scope, $stateParams, $http, currentRoute) {
+.controller('RoutesController', function($scope, $stateParams, $http, $ionicLoading, currentRoute) {
 
 	$scope.getStopsOfRoute = function() {
 		$scope.route = currentRoute.route;
@@ -106,7 +139,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 })
 
-.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, currentStop, currentRoute){
+.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute){
 	if($scope.poslat === undefined) $scope.poslat = 0;
 	if($scope.poslon === undefined) $scope.poslon = 0;
 	if($scope.range === undefined) $scope.range = 1.0;
@@ -125,6 +158,14 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 
 	$scope.search = function() {
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+
 		var url = "";
 
 		if($scope.search.by === "Stop") {
@@ -137,6 +178,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 				$scope.searchResultStops = [].concat(json.result.stop);
 				$scope.showNearStops = false;
 				$scope.showResults = true;
+
+				$ionicLoading.hide();
+
 			});
 
 		} else if($scope.search.by === "Route") {
@@ -149,6 +193,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 				$scope.searchResultRoutes = [].concat(json.result.route);
 				$scope.showNearStops = false;
 				$scope.showResults = true;
+				$ionicLoading.hide();
+
 			});
 		}
 	};
@@ -176,6 +222,14 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getCloseStops = function() {
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+
 		var url = base_url + "/stops_nearby.xql?";
 
 		url += "lon=" + $scope.poslon;
@@ -186,6 +240,9 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.stops = json.result.stop;
+
+			$ionicLoading.hide();
+
 		});
 	};
 
@@ -213,12 +270,12 @@ angular.module('lapd.existdb', ['ngCordova'])
 	    }
 	};
 
-  $scope.searchMode = { text: "Stops Near You?", checked: true };
+	$scope.searchMode = { text: "Stops Near You?", checked: true };
 
-  $scope.clearResults = function () {
-    $scope.showResults = false;
-    $scope.showNearStops = false;
-  }
+	$scope.clearResults = function () {
+		$scope.showResults = false;
+		$scope.showNearStops = false;
+	}
 });
 
 
