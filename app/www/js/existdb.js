@@ -139,7 +139,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 })
 
-.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute){
+.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute, $templateCache){
 	if($scope.poslat === undefined) $scope.poslat = 0;
 	if($scope.poslon === undefined) $scope.poslon = 0;
 	if($scope.range === undefined) $scope.range = 1.0;
@@ -222,6 +222,22 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getCloseStops = function() {
+
+		var template_modal = 
+			'<div class="custom-modal">'+
+			  '<div class="modal-title">Connection problem</div>'+
+			  '<div class="modal-body">Check your internet connection...</div>'+
+			  '<div class="modal-buttons button-bar">'+
+			  	'<button class="button button-outline button-small button-light" ng-click="getCloseStops()">'+
+			  		'Try again'+
+			  	'</button>'+
+			  	'<button class="button button-outline button-small button-light" ng-click="hideIonicLoading()">'+
+			  		'Cancel'+
+			  	'</button>'+
+			  '</div>'+
+			'</div>';
+
+		$ionicLoading.hide();
 		$ionicLoading.show({
 			content: 'Loading',
 			animation: 'fade-in',
@@ -236,14 +252,34 @@ angular.module('lapd.existdb', ['ngCordova'])
 		url += "&lat=" + $scope.poslat;
 		url += "&rng=" + $scope.range;
 
-		$http.get(url).success( function(response) {
-			var x2js = new X2JS();
-			var json = x2js.xml_str2json( response );
-			$scope.stops = json.result.stop;
+		$http({
+			method: 'GET', 
+			url: url, 
+			cache: $templateCache})
+		.then(function(response) {
+          	console.log(response);
+          	var x2js = new X2JS();
+          	var json = x2js.xml_str2json( response.data );
+          	$scope.stops = json.result.stop;
+          	$ionicLoading.hide();
+        }, function(response) {
+        	console.log(response);
+          	$ionicLoading.hide();
+          	console.log('escondeu');
+			$ionicLoading.show({
+				template: template_modal,
+				scope: $scope,
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 400,
+				showDelay: 0
+			});
+      	});
+	};
 
-			$ionicLoading.hide();
-
-		});
+	$scope.hideIonicLoading = function(){
+		console.log('tenta esconder');
+		$ionicLoading.hide();
 	};
 
 	$scope.numberPickerObject = {

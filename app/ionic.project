@@ -1,4 +1,5 @@
 {
   "name": "feup-lapd",
-  "app_id": "8a053362"
+  "app_id": "8a053362",
+  "gulpStartupTasks": ["sass", "watch"]
 }
