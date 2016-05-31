@@ -9904,3 +9904,10 @@ div.title {
 
 .custom-modal .model-buttons {
   padding: 0.5rem; }
+
+#trip-walk-step-map-container {
+  height: 100%;
+  width: 100%; }
+  #trip-walk-step-map-container #trip-walk-step-map {
+    /*height: 100%;
+    width:100%;*/ }

@@ -181,6 +181,47 @@ angular.module('lapd.map', ['ngCordova'])
     });
 })
 
+.controller('TripShowWalkStepCtrl', function($scope, $cordovaGeolocation, currentTrip, $stateParams){
+    var from = currentTrip.trips[$stateParams.index].legs[$stateParams.step_index].from;
+    var to = currentTrip.trips[$stateParams.index].legs[$stateParams.step_index].to;
+
+    var from_coords = new google.maps.LatLng(from.lat, from.lon);
+    var   to_coords = new google.maps.LatLng(  to.lat,   to.lon);
+    
+    var mapOptions = {
+      center: from_coords,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var request = {
+      origin: from_coords,
+      destination: to_coords,
+      provideRouteAlternatives: true,
+      travelMode: google.maps.TravelMode.WALKING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    }
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+
+    //document.getElementById('trip-walk-step-map').style.height = document.getElementById('trip-walk-step-map-container').clientHeight+'px';
+    document.getElementById('trip-walk-step-map').style.height = 
+      (window.innerHeight - document.getElementsByTagName('ion-header-bar')[0].offsetHeight)+'px';
+    document.getElementById('trip-walk-step-map').style.width  = document.getElementById('trip-walk-step-map-container').clientWidth+'px';
+
+    $scope.map = new google.maps.Map(document.getElementById("trip-walk-step-map"), mapOptions);
+    directionsDisplay.setMap($scope.map);
+
+    directionsService.route(request, function(result, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(result);
+      }
+    });
+
+})
+
 function placeMarker(location, map) {
   if(markerEndGlobal != null) {
     markerEndGlobal.setMap(null);

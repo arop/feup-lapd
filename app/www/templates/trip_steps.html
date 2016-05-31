@@ -6,13 +6,13 @@
 	<p>transfers: {{trip.transfers}}</p>
 
 	<ion-list>
-		<ion-item ng-repeat="leg in trip.legs">
+		<ion-item ng-repeat="leg in trip.legs track by $index">
 			<span ng-if="leg.mode == 'BUS'">
 				<p class="item-note">Bus <i class="ion-android-bus"></i></p>
 				<p>{{leg.routeShortName}} - {{leg.routeLongName}}</p>
 				<p>{{leg.from.name}} - {{leg.to.name}}</p>
 			</span>
-			<span ng-if="leg.mode == 'WALK'">
+			<span ng-if="leg.mode == 'WALK'" ui-sref=".walk({step_index: $index})">
 				<p class="item-note">Walk <i class="ion-android-walk"></i></p>
 				<p>Distance: {{leg.distance | number: 2}}m</p>
 			</span>
