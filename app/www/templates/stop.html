@@ -1,4 +1,21 @@
 <ion-view title="{{ stop.stop_name }}" data-ng-init="getStop()">
+
+  <ion-nav-bar class="bar-calm nav-title-slide-ios7">
+      <!--<ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
+          Back
+      </ion-nav-back-button>-->
+      <ion-nav-buttons side="right">
+        <button ng-if="!stop_in_favorites" class="button button-clear button-light" ng-click="addStopToFavorites()">
+          <i class="ion-ios-star-outline" style="font-size: 2rem"></i>
+        </button>
+
+        <button ng-if="stop_in_favorites" class="button button-clear button-light" ng-click="removeStopFromFavorites()">
+          <i class="ion-ios-star" style="font-size: 2rem"></i>
+        </button>
+
+      </ion-nav-buttons>
+  </ion-nav-bar>
+
   <ion-content id="stop_view">
     <input type="hidden" id="coord" lat="{{stop.point.coordinates[1]}}" lon="{{stop.point.coordinates[0]}}">
     <label class="row" id="top_info">

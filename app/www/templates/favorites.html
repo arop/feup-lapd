@@ -1,0 +1,21 @@
+<ion-view title="Favorites" ng-init="">
+	<ion-content id = "favorites">
+		<div class="resultsContainer">
+			<h1>Stops</h1>
+			<ion-list>
+				<ion-item ng-repeat="s in favorites.stops" ng-click="viewStop(s)">
+					{{s.stop_name}}
+				</ion-item>
+			</ion-list>
+		</div>
+
+		<div class="resultsContainer">
+			<h1>Routes</h1>
+			<ion-list>
+				<ion-item ng-repeat="r in favorites.routes" ng-click="viewRoute(s)">
+					{{s.stop_name}} - TODO
+				</ion-item>
+			</ion-list>
+		</div>
+	</ion-content>
+</ion-view>

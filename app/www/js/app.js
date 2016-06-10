@@ -132,6 +132,16 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.ube
     }
   })
 
+  .state('app.favorites', {
+    url: '/favorites',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/favorites.html',
+        controller: 'FavoritesController'
+      }
+    }
+  })
+
   .state('app.home', {
     url: '/home',
     views: {

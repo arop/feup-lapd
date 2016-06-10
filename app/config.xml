@@ -40,4 +40,9 @@
     <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
+
+  <allow-navigation href="http://cloud.joaonorim.eu:22000/exist/*" /> 
+  <allow-navigation href="http://maps.google.com/*" />
+  <allow-navigation href="https://api.ost.pt/*" />
+
 </widget>

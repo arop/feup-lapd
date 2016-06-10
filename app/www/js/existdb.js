@@ -35,11 +35,68 @@ angular.module('lapd.existdb', ['ngCordova'])
 	currentRoute.route = {};
 })
 
-.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, $ionicLoading, currentStop){
+.service('favorites', function (){
+	var favorites = this;
+
+	favorites.initialize = function (){
+		var empty_favorites = {'stops' : {}, 'routes': {}, 'trips': {}};
+		//window.localStorage.setItem('favorites', JSON.stringify(empty_favorites));
+		if(window.localStorage.getItem('favorites') === undefined || window.localStorage.getItem('favorites') == null){
+			window.localStorage.setItem('favorites', JSON.stringify(empty_favorites));
+		}
+	};
+
+	favorites.addStop = function (stop){
+		favorites.initialize();
+		var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+		favorites_temp.stops[stop.id] = stop;
+		window.localStorage.setItem('favorites', JSON.stringify(favorites_temp));
+	};
+
+	favorites.removeStop = function (stop){
+		favorites.initialize();
+		var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+		delete favorites_temp.stops[stop.id];		
+		window.localStorage.setItem('favorites', JSON.stringify(favorites_temp));	
+	};
+
+	/**
+	*	return true if stop exists in favorites and false otherwise.
+	*/
+	favorites.stopExists = function(stop){
+		favorites.initialize();
+		var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+		return favorites_temp.stops[stop.id] !== undefined;
+	}
+
+	favorites.getStops = function (){
+		favorites.initialize();
+		return JSON.parse(window.localStorage.getItem('favorites')).stops;
+	}
+
+	favorites.getAll = function () {
+		favorites.initialize();
+		return JSON.parse(window.localStorage.getItem('favorites'));	
+	}
+})
+
+.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, $ionicLoading, currentStop, favorites){
+	$scope.stop_in_favorites = false;
 	if($scope.stop === undefined) $scope.stop = {};
+
+	$scope.addStopToFavorites = function (){
+		favorites.addStop($scope.stop);
+		$scope.stop_in_favorites = true;
+	};
+
+	$scope.removeStopFromFavorites = function(){
+		favorites.removeStop($scope.stop);
+		$scope.stop_in_favorites = false;
+	};
 
 	$scope.getStop = function() {
 		$scope.stop = currentStop.stop;
+		$scope.stop_in_favorites = favorites.stopExists($scope.stop);
 	};
 
 	$scope.getStopFromExistdb = function() {
@@ -139,6 +196,20 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 })
 
+.controller('FavoritesController', function($scope, $state, currentStop, currentRoute, favorites){
+	$scope.favorites = favorites.getAll();
+	console.log($scope.favorites);
+	$scope.viewStop = function(stop) {
+		currentStop.stop = stop;
+		$state.go('app.stop',{'id' : stop.id});
+	};
+
+	$scope.viewRoute = function(route) {
+		currentRoute.route = route;
+		$state.go('app.route',{'id' : route.id});
+	};
+})
+
 .controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute, $templateCache){
 	if($scope.poslat === undefined) $scope.poslat = 0;
 	if($scope.poslon === undefined) $scope.poslon = 0;
@@ -213,13 +284,11 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 	$scope.viewStop = function(stop) {
 		currentStop.stop = stop;
-
 		$state.go('app.stop',{'id' : stop.id});
 	};
 
 	$scope.viewRoute = function(route) {
 		currentRoute.route = route;
-
 		$state.go('app.route',{'id' : route.id});
 	};
 
