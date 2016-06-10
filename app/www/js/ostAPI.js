@@ -2,7 +2,7 @@ var base_url_ost = "https://api.ost.pt/";
 
 angular.module('lapd.ost', ['ngCordova'])
 
-.controller('TripPlannerController', function ($scope, $http, $state, $stateParams, $ionicLoading, currentTrip, TripValuesInTripplanner) {
+.controller('TripPlannerController', function ($scope, $http, $state, $stateParams, ionicLoadingService, connectionProblemPopup, currentTrip, TripValuesInTripplanner) {
 
 	$scope.showTrip = function () {
 		$scope.trips = currentTrip.trips;
@@ -13,13 +13,7 @@ angular.module('lapd.ost', ['ngCordova'])
 	};
 
 	$scope.getTrip = function() {
-		$ionicLoading.show({
-			content: 'Loading',
-			animation: 'fade-in',
-			showBackdrop: true,
-			maxWidth: 200,
-			showDelay: 0
-		});
+		ionicLoadingService.showLoading();
 
 		var d = new Date();
 		var n = d.getTimezoneOffset();
@@ -41,22 +35,18 @@ angular.module('lapd.ost', ['ngCordova'])
 		url += '&date=' + encodeURIComponent(strftimeHere('%F', d));
 		url += '&mode=TRANSIT%2CWALK';
 		url += '&key=wOfLniMzlmTPRoUSOLmLWVyyWpnnNotUsisSFTTF';
-
-    console.log(url);
-
+    
 		$http.get(url).success( function(response) {
-      console.log(response);
-
 			currentTrip.trips = response.Objects[0].itineraries;
 
-			$ionicLoading.hide();
+			ionicLoadingService.hideLoading();
 
 			TripValuesInTripplanner.setValue(startLat,startLon,endLat,endLon);
 
 			$state.go('app.tripplanner.show');
 		}).error( function (response) {
-			console.log(response);
-			$ionicLoading.hide();
+			ionicLoadingService.hideLoading();
+      connectionProblemPopup.showRetry($scope.getTrip);
 		});
 	};
 

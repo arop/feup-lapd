@@ -5,151 +5,190 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.uber', 'ionic-numberpicker'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+  .run(function($ionicPlatform) {
+    $ionicPlatform.ready(function() {
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
-
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-
-  .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html'
+        // Don't remove this line unless you know what you are doing. It stops the viewport
+        // from snapping when text inputs are focused. Ionic handles this internally for
+        // a much nicer keyboard experience.
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
+      if(window.StatusBar) {
+        StatusBar.styleDefault();
+      }
+    });
   })
 
-  .state('app.agencies', {
-    url: '/agencies',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/agencies.html',
-        controller: 'AgenciesController'
-      }
-    }
+  .config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+
+      .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/menu.html'
+      })
+
+      .state('app.agencies', {
+        url: '/agencies',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/agencies.html',
+            controller: 'AgenciesController'
+          }
+        }
+      })
+
+      .state('app.uber', {
+        url: '/uber',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/uber.html',
+            controller: 'UberController'
+          }
+        }
+      })
+
+      .state('app.search', {
+        url: '/search',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/search.html',
+            controller: 'SearchController'
+          }
+        }
+      })
+
+      .state('app.stop.schedule', {
+        url: '/schedule/:route_id',
+        views: {
+          'menuContent@app': {
+            templateUrl: 'templates/stop_schedule.html',
+            controller: 'StopsController'
+          }
+        }
+      })
+
+      .state('app.stop', {
+        url: '/stop/:id',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/stop.html',
+            controller: 'StopsController'
+          }
+        }
+      })
+
+      .state('app.route', {
+        url: '/route/:id',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/route.html',
+            controller: 'RoutesController'
+          }
+        }
+      })
+
+      .state('app.tripplanner', {
+        url: '/tripplanner',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/trip_planner.html',
+            controller: 'TripPlannerController'
+          }
+        }
+      })
+
+      .state('app.tripplanner.show', {
+        url: '/show',
+        views: {
+          'menuContent@app': {
+            templateUrl: 'templates/trip_itinerary.html',
+            controller: 'TripPlannerController'
+          }
+        }
+      })
+
+      .state('app.tripplanner.show.steps', {
+        url: '/steps/:index',
+        views: {
+          'menuContent@app': {
+            templateUrl: 'templates/trip_steps.html',
+            controller: 'TripPlannerController'
+          }
+        }
+      })
+
+      .state('app.tripplanner.show.steps.walk', {
+        url: '/walk/:step_index',
+        views: {
+          'menuContent@app': {
+            templateUrl: 'templates/trip_step_walk.html',
+            controller: 'TripShowWalkStepCtrl'
+          }
+        }
+      })
+
+      .state('app.favorites', {
+        url: '/favorites',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/favorites.html',
+            controller: 'FavoritesController'
+          }
+        }
+      })
+
+      .state('app.home', {
+        url: '/home',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/home.html'
+          }
+        }
+      });
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/app/home');
   })
 
-  .state('app.uber', {
-    url: '/uber',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/uber.html',
-        controller: 'UberController'
-      }
-    }
+  .service('ionicLoadingService', function ($ionicLoading) {
+    var ionicLoadingService = this;
+    ionicLoadingService.showLoading = function () {
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        hideOnStateChange: true,
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+    };
+
+    ionicLoadingService.hideLoading = function () {
+      $ionicLoading.hide();
+    };
   })
 
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html',
-        controller: 'SearchController'
-      }
-    }
-  })
+  .service('connectionProblemPopup', function ($ionicPopup) {
+    var connectionProblemPopup = this;
 
-  .state('app.stop.schedule', {
-    url: '/schedule/:route_id',
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/stop_schedule.html',
-        controller: 'StopsController'
-      }
-    }
-  })
+    // A confirm dialog
+    connectionProblemPopup.showRetry = function(retryFunction) {
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Connection Problem',
+        template: 'Do you want to try again?'
+      });
 
-  .state('app.stop', {
-    url: '/stop/:id',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/stop.html',
-        controller: 'StopsController'
-      }
-    }
+      confirmPopup.then(function(res) {
+        if(res) {
+          console.log('You are sure');
+          retryFunction();
+        } else {
+          console.log('You are not sure');
+        }
+      });
+    };
   })
-
-  .state('app.route', {
-    url: '/route/:id',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/route.html',
-        controller: 'RoutesController'
-      }
-    }
-  })
-
-  .state('app.tripplanner', {
-    url: '/tripplanner',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/trip_planner.html',
-        controller: 'TripPlannerController'
-      }
-    }
-  })
-
-  .state('app.tripplanner.show', {
-    url: '/show',
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/trip_itinerary.html',
-        controller: 'TripPlannerController'
-      }
-    }
-  })
-
-  .state('app.tripplanner.show.steps', {
-    url: '/steps/:index',
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/trip_steps.html',
-        controller: 'TripPlannerController'
-      }
-    }
-  })
-
-  .state('app.tripplanner.show.steps.walk', {
-    url: '/walk/:step_index',
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/trip_step_walk.html',
-        controller: 'TripShowWalkStepCtrl'
-      }
-    }
-  })
-
-  .state('app.favorites', {
-    url: '/favorites',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/favorites.html',
-        controller: 'FavoritesController'
-      }
-    }
-  })
-
-  .state('app.home', {
-    url: '/home',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/home.html'
-      }
-    }
-  });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home');
-});
