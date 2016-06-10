@@ -79,7 +79,7 @@ angular.module('lapd.map', ['ngCordova'])
           map: $scope.map,
           animation: google.maps.Animation.DROP,
           position: stopLatLng
-        });      
+        });
 
         var stopInfoWindow = new google.maps.InfoWindow({
           content: "Stop is here!"
@@ -99,7 +99,7 @@ angular.module('lapd.map', ['ngCordova'])
 
 .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
-  
+
   $scope.start_address = '';
   $scope.end_address = '';
 
@@ -190,7 +190,7 @@ angular.module('lapd.map', ['ngCordova'])
 
     var from_coords = new google.maps.LatLng(from.lat, from.lon);
     var   to_coords = new google.maps.LatLng(  to.lat,   to.lon);
-    
+
     var mapOptions = {
       center: from_coords,
       zoom: 15,
@@ -210,7 +210,7 @@ angular.module('lapd.map', ['ngCordova'])
 
 
     //document.getElementById('trip-walk-step-map').style.height = document.getElementById('trip-walk-step-map-container').clientHeight+'px';
-    document.getElementById('trip-walk-step-map').style.height = 
+    document.getElementById('trip-walk-step-map').style.height =
       (window.innerHeight - document.getElementsByTagName('ion-header-bar')[0].offsetHeight)+'px';
     document.getElementById('trip-walk-step-map').style.width  = document.getElementById('trip-walk-step-map-container').clientWidth+'px';
 
@@ -263,7 +263,7 @@ function callback(results, status) {
 
 function initAutocomplete(map, currentEndMarker, geocoder) {
   // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
+  var input = document.getElementById('pac-input-start');
   var searchBox = new google.maps.places.SearchBox(input);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 

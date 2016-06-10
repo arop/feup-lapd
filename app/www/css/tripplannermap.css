@@ -9,7 +9,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-#pac-input {
+#pac-input-start, #pac-input-end {
   background-color: #fff;
   font-family: Roboto;
   font-size: 15px;
@@ -20,7 +20,7 @@
   width: 300px;
 }
 
-#pac-input:focus {
+#pac-input-start:focus, #pac-input-end:focus {
   border-color: #4d90fe;
 }
 
