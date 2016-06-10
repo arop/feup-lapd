@@ -42,7 +42,11 @@ angular.module('lapd.ost', ['ngCordova'])
 		url += '&mode=TRANSIT%2CWALK';
 		url += '&key=wOfLniMzlmTPRoUSOLmLWVyyWpnnNotUsisSFTTF';
 
+    console.log(url);
+
 		$http.get(url).success( function(response) {
+      console.log(response);
+
 			currentTrip.trips = response.Objects[0].itineraries;
 
 			$ionicLoading.hide();

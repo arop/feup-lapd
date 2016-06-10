@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'lapd' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.uber', 'ionic-numberpicker', 'ion-google-place'])
+angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.uber', 'ionic-numberpicker'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
