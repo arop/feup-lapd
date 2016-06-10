@@ -1,10 +1,10 @@
 {
   "name": "ionic-numberpicker",
-  "version": "1.0.1",
+  "version": "1.1.4",
   "authors": [
-    "milk can llc <admin@milkcan.io>"
+    "milk can llc <matt@milkcan.io>"
   ],
-  "description": "A number picker component for Ionic framework",
+  "description": "A number picker component for Ionic framework V1",
   "main": [
     "./dist/ionic-numberpicker.bundle.min.js"
   ],
@@ -28,14 +28,13 @@
   "dependencies": {
     "ionic": ">=0.9.27"
   },
-  "_release": "1.0.1",
+  "_release": "1.1.4",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.1",
-    "commit": "c9e34050d40bf550a6178a9d7d09e237f9e4cb37"
+    "tag": "1.1.4",
+    "commit": "8189509c835bdc60073083564e55843dd1d13d71"
   },
   "_source": "https://github.com/milkcan/ionic-numberpicker.git",
   "_target": "^1.0.1",
-  "_originalSource": "ionic-numberpicker",
-  "_direct": true
+  "_originalSource": "ionic-numberpicker"
 }

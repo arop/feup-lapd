@@ -134,7 +134,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 			var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.stops = json.result.stop;
-			console.log(json);
+			console.log($scope.stops);
 		});
 	};
 })
@@ -178,6 +178,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 				$scope.searchResultStops = [].concat(json.result.stop);
 				$scope.showNearStops = false;
 				$scope.showResults = true;
+
+        console.log($scope.searchResultStops);
 
 				$ionicLoading.hide();
 
@@ -223,7 +225,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 	$scope.getCloseStops = function() {
 
-		var template_modal = 
+		var template_modal =
 			'<div class="custom-modal">'+
 			  '<div class="modal-title">Connection problem</div>'+
 			  '<div class="modal-body">Check your internet connection...</div>'+
@@ -253,8 +255,8 @@ angular.module('lapd.existdb', ['ngCordova'])
 		url += "&rng=" + $scope.range;
 
 		$http({
-			method: 'GET', 
-			url: url, 
+			method: 'GET',
+			url: url,
 			cache: $templateCache})
 		.then(function(response) {
           	console.log(response);

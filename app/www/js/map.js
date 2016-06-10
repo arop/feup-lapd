@@ -99,6 +99,9 @@ angular.module('lapd.map', ['ngCordova'])
 
 .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
   var options = {timeout: 10000, enableHighAccuracy: true};
+  
+  $scope.start_address = '';
+  $scope.end_address = '';
 
   // start map after getting current position
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){

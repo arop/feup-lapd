@@ -21,7 +21,9 @@
         scope.inputValue = scope.inputObj.inputValue ? scope.inputObj.inputValue : 0;
         scope.minValue = typeof(scope.inputObj.minValue !== 'undefined') ? scope.inputObj.minValue : -9007199254740991;
         scope.maxValue = typeof(scope.inputObj.maxValue !== 'undefined') ? scope.inputObj.maxValue : 9007199254740991;
+        scope.precision = scope.inputObj.precision ? scope.inputObj.precision : 3;
         scope.format = scope.inputObj.format ? scope.inputObj.format : 'DECIMAL';
+        scope.unit = scope.inputObj.unit ? scope.inputObj.unit : '';
         scope.titleLabel = scope.inputObj.titleLabel ? scope.inputObj.titleLabel : 'Number Picker';
         scope.setLabel = scope.inputObj.setLabel ? scope.inputObj.setLabel : 'Set';
         scope.closeLabel = scope.inputObj.closeLabel ? scope.inputObj.closeLabel : 'Close';
@@ -32,7 +34,8 @@
 
         scope.wholeNumber = 0;
         scope.decimalNumber = 0;
-        scope.numericValue = scope.wholeNumber + '.' + scope.decimalNumber;
+        scope.isNegative = false;
+        scope.numericValue = Number(scope.wholeNumber + '.' + scope.decimalNumber);
 
         //Changing the style
         scope.changeFormat = function () {
@@ -47,68 +50,74 @@
 
         //Increasing the whole number
         scope.increaseWhole = function () {
-          scope.wholeNumber = Number(scope.wholeNumber);
-          scope.wholeNumber += 1;
-          scope.numericValue = scope.wholeNumber + scope.decimalNumber;
+          scope.numericValue += 1;
+          scope.wholeNumber = findWholeNumber(scope.numericValue);
+          scope.decimalNumber = strip(scope.numericValue % 1);
 
           scope.checkMax();
         };
 
         //Decreasing the whole number
         scope.decreaseWhole = function () {
-          scope.wholeNumber = Number(scope.wholeNumber);
-          scope.wholeNumber -= 1;
-          scope.numericValue = scope.wholeNumber + scope.decimalNumber;
+          scope.numericValue -= 1;
+          scope.wholeNumber = findWholeNumber(scope.numericValue);
+          scope.decimalNumber = strip(scope.numericValue % 1);
 
           scope.checkMin();
         };
 
         //Increasing the decimal number
         scope.increaseDecimal = function () {
-          scope.decimalNumber = Number(scope.decimalNumber);
-          scope.decimalNumber += scope.decimalStep;
-
-          if (scope.decimalNumber >= 1) {
-            scope.wholeNumber += 1;
-            scope.decimalNumber -= 1;
-          }
-
-          scope.numericValue = scope.wholeNumber + scope.decimalNumber;
+          scope.numericValue += scope.decimalStep;
+          scope.wholeNumber = findWholeNumber(scope.numericValue);
+          scope.decimalNumber = strip(scope.numericValue % 1);
 
           scope.checkMax();
         };
 
         //Decreasing the decimal number
         scope.decreaseDecimal = function () {
-          scope.decimalNumber = Number(scope.decimalNumber);
-          scope.decimalNumber -= scope.decimalStep;
-
-          if (scope.decimalNumber < 0) {
-            scope.wholeNumber -= 1;
-            scope.decimalNumber += 1;
-          }
-
-          scope.numericValue = scope.wholeNumber + scope.decimalNumber;
+          scope.numericValue -= scope.decimalStep;
+          scope.wholeNumber = findWholeNumber(scope.numericValue);
+          scope.decimalNumber = strip(scope.numericValue % 1);
 
           scope.checkMin();
         };
+
+        function strip(number, precision) {
+          var returnVal = (parseFloat(number).toFixed(scope.precision));
+          return returnVal;
+        }
+
+        function findWholeNumber(number) {
+          var returnVal = 0;
+
+          if (number >= 0) {
+            scope.isNegative = false;
+            returnVal = Math.floor(number);
+          } else {
+            scope.isNegative = true;
+            returnVal = Math.ceil(number);
+          }
+
+          return Math.abs(returnVal);
+        }
 
         //Make sure number is not too high
         scope.checkMax = function() {
           if (scope.numericValue >= scope.maxValue) {
             scope.numericValue = scope.maxValue;
-            scope.wholeNumber = Math.floor(scope.numericValue);
-            scope.decimalNumber = scope.numericValue % 1;
+            scope.wholeNumber = findWholeNumber(scope.numericValue);
+            scope.decimalNumber = strip(scope.numericValue % 1);
           }
         }
 
         //Make sure number is not too low
         scope.checkMin = function() {
-          console.log("VALUE:" + scope.numericValue + ", MINVAL:" + scope.minValue);
           if (scope.numericValue <= scope.minValue) {
             scope.numericValue = scope.minValue;
-            scope.wholeNumber = Math.floor(scope.numericValue);
-            scope.decimalNumber = scope.numericValue % 1;
+            scope.wholeNumber = findWholeNumber(scope.numericValue);
+            scope.decimalNumber = strip(scope.numericValue % 1);
           }
         }
 
@@ -117,8 +126,10 @@
           if (scope.format == 'DECIMAL') {
 
             //Get Values from Initial Number
-            scope.wholeNumber = Math.floor(scope.inputValue);
+            scope.wholeNumber = findWholeNumber(Number(scope.inputValue));
             scope.decimalNumber = scope.inputValue % 1;
+            scope.numericValue = Number(scope.wholeNumber) + Number(strip(scope.decimalNumber, scope.precision));
+            scope.decimalNumber = strip(scope.numericValue % 1);
 
             $ionicPopup.show({
               templateUrl: 'ionic-numberpicker-decimal.html',
@@ -139,7 +150,7 @@
                   onTap: function (e) {
                     scope.loadingContent = true;
         
-                    scope.numericValue = scope.wholeNumber + scope.decimalNumber;
+                    scope.numericValue = Number(scope.wholeNumber) + Number(strip(scope.decimalNumber, scope.precision));
                     scope.inputObj.callback(scope.numericValue);
                   }
                 }
@@ -148,8 +159,9 @@
 
           } else {
             //Get Values from Initial Number
-            scope.wholeNumber = Math.floor(scope.inputValue);
+            scope.wholeNumber = findWholeNumber(scope.inputValue);
             scope.decimalNumber = 0;
+            scope.numericValue = Number(findWholeNumber(scope.wholeNumber)) + Number(strip(scope.decimalNumber, scope.precision));
 
             $ionicPopup.show({
               templateUrl: 'ionic-numberpicker-whole.html',

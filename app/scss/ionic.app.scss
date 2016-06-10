@@ -3,7 +3,7 @@
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+@import "../www/lib/ionic/scss/ionic";
 
 // Mixins
 @mixin animation($element: all, $duration: 0.3s, $effect: ease-in-out) {
@@ -24,6 +24,7 @@ ion-list {
   ion-item {
     border: none;
     @include animation();
+    text-align: center;
 
     &:nth-child(2n) {
       background: rgba(128, 128, 128, 0.08);
@@ -74,7 +75,8 @@ div.title {
 
 /* homepage */
 #homepage {
-  background: url(../img/banner.jpg) repeat-y center center;
+  background: url(../img/banner.jpg) no-repeat center center;
+  background-size: cover;
   top: 0 !important;
   z-index: 1000;
 
@@ -233,40 +235,42 @@ div.title {
   }
 }
 
+/* trip planner */
+.ion-google-place-container {
+  ion-item {
+    background: white !important;
+  }
+}
 
-/*.modal-block{
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 500;
+#trip_planner_form {
+  width: 88%;
+  display: inline-block;
 
-  .modal-background{
-    background-color: rgba(0,0,0,0.7);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;    
-    z-index: 500;
-    display: table-row;
+  .form-group {
+    width: 100%;
+    padding: 0 5px;
 
-
-    .modal-container{
-      height: auto;
-      width: 70%;
-      max-width: 500px;
-      margin: auto;
-      background-color: rgba(255,255,255,0.9);
-      z-index: 500;
-      display: table-cell;
-      vertical-align: middle;
+    label {
+      width: 20%;
+      display: inline-block;
+      text-align: left;
     }
 
-  }
+    div {
+      width: 75%;
+      display: inline-block;
 
-}*/
+      input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+#go-button {
+  display: inline-block;
+  width: 10%;
+}
 
 .custom-modal{
   .modal-title{
@@ -279,7 +283,7 @@ div.title {
 
   .modal-body{
     padding: 0.5rem;
-    margin-bottom: 1rem; 
+    margin-bottom: 1rem;
   }
   .model-buttons{
     padding: 0.5rem;
@@ -293,6 +297,6 @@ div.title {
   #trip-walk-step-map{
     /*height: 100%;
     width:100%;*/
-  }  
+  }
 }
 

@@ -1,10 +1,10 @@
 {
   "name": "ionic-numberpicker",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "authors": [
-    "milk can llc <admin@milkcan.io>"
+    "milk can llc <matt@milkcan.io>"
   ],
-  "description": "A number picker component for Ionic framework",
+  "description": "A number picker component for Ionic framework V1",
   "main": [
     "./dist/ionic-numberpicker.bundle.min.js"
   ],

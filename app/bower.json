@@ -1,10 +1,17 @@
 {
-  "name": "HelloIonic",
+  "name": "eztrip",
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.4"
   },
   "dependencies": {
-    "ionic-numberpicker": "^1.0.1"
+    "ionic-numberpicker": "^1.0.1",
+    "ngCordova": "^0.1.26-alpha",
+    "ion-google-place": "^0.0.1"
+  },
+  "resolutions": {
+    "angular-sanitize": "1.5.3",
+    "angular-animate": "1.5.3",
+    "angular": ">= 1.0.8"
   }
 }

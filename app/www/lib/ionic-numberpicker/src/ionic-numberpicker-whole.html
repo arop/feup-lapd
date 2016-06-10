@@ -1,6 +1,8 @@
 <div class="WholeNumberPickerChildDiv">
   <div class="row">
-    <span class="button-small col col-offset-33 col-25">
+    <label class="col col-offset-25 col-10 numberPickerDecimal" ng-show="isNegative">-</label>
+    <label class="col col-offset-25 col-10 numberPickerDecimal" ng-hide="isNegative"> </label>
+    <span class="button-small col col-25">
       <button type="button" class="button button-clear button-small button-dark numberPickerArrows marginBottom10"
               ng-click="increaseWhole()">
         <i class="icon ion-chevron-up"></i></button>
@@ -9,5 +11,6 @@
               ng-click="decreaseWhole()">
         <i class="icon ion-chevron-down"></i></button>
     </span>
+    <label class="col numberPickerDecimal">{{ unit }}</label>
   </div>
 </div>

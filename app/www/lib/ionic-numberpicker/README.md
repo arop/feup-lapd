@@ -37,9 +37,10 @@ $scope.numberPickerObject = {
     inputValue: 0, //Optional
     minValue: -9007199254740991,
     maxValue: 9007199254740991,
-    decimalCharacter: '.',  //Optional
+    precision: 3,  //Optional
     decimalStep: 0.25,  //Optional
     format: "DECIMAL",  //Optional - "WHOLE" or "DECIMAL"
+    unit: "",  //Optional - "m", "kg", "℃" or whatever you want
     titleLabel: 'Number Picker',  //Optional
     setLabel: 'Set',  //Optional
     closeLabel: 'Close',  //Optional
@@ -53,19 +54,19 @@ $scope.numberPickerObject = {
 
 ##Versions:
 
-### 1) v1.0.1
- - Fixed decimalStep issue
- - Added functionality to allow control over character used for decimal place ('decimalCharacter').
+### 2) v1.1
+- Fixed issue with floating point math
+- Added support for negative numbers
 
-### 2) v1.0.0
-Number picker functionality has been implemented, and can be installed with 
-
-bower install ionic-numberpicker --save
+### 1) v1.0
+- Number picker functionality has been implemented
 
 ##License:
 [MIT](https://github.com/milkcan/ionic-numberpicker/blob/master/LICENSE.MD "MIT")
 
 ##Contact:
-email : admin@milkcan.io
+email : matt@milkcan.io
 
-Rate it or Comment : http://market.ionic.io/plugins/ionic-numberpicker
+##Other Links:
+- [GitHub](https://github.com/milkcan/ionic-numberpicker)
+- Rate it or Comment : [Ionic Marketplace](http://market.ionic.io/plugins/numberpicker)
