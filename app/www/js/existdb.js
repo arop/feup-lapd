@@ -3,6 +3,26 @@ var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
 
 angular.module('lapd.existdb', ['ngCordova'])
 
+.service('noConnectionPopup', function(){
+	var noConnectionPopup = this;
+	noConnectionPopup.getTemplate = function(try_again_function_name, cancel_function_name){
+		console.log('dliuawgflaswi<ugfiluaeswbgfilouçs<ewhf  ' + try_again_function_name);
+		return '<div class="custom-modal">'+
+			  '<div class="modal-title">Connection problem</div>'+
+			  '<div class="modal-body">Check your internet connection...</div>'+
+			  '<div class="modal-buttons button-bar">'+
+			  	'<button class="button button-outline button-small button-light" ng-click="'+try_again_function_name+'()">'+
+			  		'Try again'+
+			  	'</button>'+
+			  	'<button class="button button-outline button-small button-light" ng-click="'+cancel_function_name+'()">'+
+			  		'Cancel'+
+			  	'</button>'+
+			  '</div>'+
+			'</div>';
+	};
+})
+
+
 .controller('AgenciesController', function($scope, $http, $ionicLoading){
 	var url = base_url + "/agencies.xql";
 
@@ -80,7 +100,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	}
 })
 
-.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, $ionicLoading, currentStop, favorites){
+.controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, $ionicLoading, $templateCache, currentStop, favorites, noConnectionPopup){
 	$scope.stop_in_favorites = false;
 	if($scope.stop === undefined) $scope.stop = {};
 
@@ -100,6 +120,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.getStopFromExistdb = function() {
+		$ionicLoading.hide();
 		$ionicLoading.show({
 			content: 'Loading',
 			animation: 'fade-in',
@@ -113,16 +134,30 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 		url += "id=" + $stateParams.id;
 
-		$http.get(url).success( function(response) {
-			var x2js = new X2JS();
+		$http({
+			method: 'GET',
+			url: url,
+			cache: $templateCache})
+		.then(function(response) {
+          	var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.stop = json.result.stop;
-
 			$ionicLoading.hide();
-		});
+        }, function(response) {
+          	$ionicLoading.hide();
+			$ionicLoading.show({
+				template: noConnectionPopup.getTemplate('getStopFromExistdb','hideIonicLoading'),
+				scope: $scope,
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 400,
+				showDelay: 0
+			});
+      	});
 	};
 
 	$scope.getStopSchedule = function() {
+		$ionicLoading.hide();
 		$ionicLoading.show({
 			content: 'Loading',
 			animation: 'fade-in',
@@ -132,11 +167,15 @@ angular.module('lapd.existdb', ['ngCordova'])
 		});
 
 		var url = base_url + "/stop-route-schedule.xql?";
-
 		url += "stop_id=" + $stateParams.id + "&route_id=" + $stateParams.route_id;
 
-		$http.get(url).success( function(response) {
-			var x2js = new X2JS();
+		$http({
+			method: 'GET',
+			url: url,
+			cache: $templateCache})
+		.then(function(response) {
+
+          	var x2js = new X2JS();
 			var json = x2js.xml_str2json( response );
 			$scope.schedule = json.result.route;
 
@@ -173,26 +212,65 @@ angular.module('lapd.existdb', ['ngCordova'])
 			//console.log($scope.schedule);
 
 			$ionicLoading.hide();
+        }, function(response) {
+        	console.log('erro stop route schedule ajax');
+          	$ionicLoading.hide();
+			$ionicLoading.show({
+				template: noConnectionPopup.getTemplate('getStopSchedule','hideIonicLoading'),
+				scope: $scope,
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 400,
+				showDelay: 0
+			});
+      	});
+	};
 
-		});
+	$scope.hideIonicLoading = function(){
+		$ionicLoading.hide();
 	};
 })
 
 .controller('RoutesController', function($scope, $stateParams, $http, $ionicLoading, currentRoute) {
 
 	$scope.getStopsOfRoute = function() {
+		$ionicLoading.hide();
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+
 		$scope.route = currentRoute.route;
-
 		var url = base_url + "/stops-by-route.xql?";
-
 		url += "route_id=" + $stateParams.id;
 
-		$http.get(url).success( function(response) {
-			var x2js = new X2JS();
-			var json = x2js.xml_str2json( response );
-			$scope.stops = json.result.stop;
-			console.log($scope.stops);
-		});
+		$http({
+			method: 'GET',
+			url: url,
+			cache: $templateCache})
+		.then(
+
+			function(response) {
+	          	var x2js = new X2JS();
+				var json = x2js.xml_str2json( response );
+				$scope.stops = json.result.stop;
+				$ionicLoading.hide();
+        	},
+
+         	function(response) {
+	          	$ionicLoading.hide();
+				$ionicLoading.show({
+					template: noConnectionPopup.getTemplate('getStopsOfRoute','hideIonicLoading'),
+					scope: $scope,
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 400,
+					showDelay: 0
+				});
+      	});
 	};
 })
 
@@ -210,7 +288,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 })
 
-.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute, $templateCache){
+.controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, $ionicLoading, currentStop, currentRoute, $templateCache, noConnectionPopup){
 	if($scope.poslat === undefined) $scope.poslat = 0;
 	if($scope.poslon === undefined) $scope.poslon = 0;
 	if($scope.range === undefined) $scope.range = 1.0;
@@ -229,6 +307,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 
 	$scope.search = function() {
+		$ionicLoading.hide();
 		$ionicLoading.show({
 			content: 'Loading',
 			animation: 'fade-in',
@@ -242,43 +321,68 @@ angular.module('lapd.existdb', ['ngCordova'])
 		if($scope.search.by === "Stop") {
 			url = base_url + "/search-stop-name.xql?";
 			url += "search=" + $scope.search.text;
-
-			$http.get(url).success( function(response) {
+			console.log(url);
+			$http({
+				method: 'GET',
+				url: url,
+				cache: $templateCache})
+			.then(function(response) {
 				var x2js = new X2JS();
-				var json = x2js.xml_str2json( response );
+				var json = x2js.xml_str2json( response.data );
+				console.log(response);
 				$scope.searchResultStops = [].concat(json.result.stop);
 				$scope.showNearStops = false;
 				$scope.showResults = true;
-
-        console.log($scope.searchResultStops);
-
 				$ionicLoading.hide();
-
-			});
+	        }, function(response) {
+	          	$ionicLoading.hide();
+				$ionicLoading.show({
+					template: noConnectionPopup.getTemplate('search','hideIonicLoading'),
+					scope: $scope,
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 400,
+					showDelay: 0
+				});
+	      	});
 
 		} else if($scope.search.by === "Route") {
 			url = base_url + "/search-route-name.xql?";
 			url += "search=" + $scope.search.text;
 
-			$http.get(url).success( function(response) {
+			$http({
+				method: 'GET',
+				url: url,
+				cache: $templateCache})
+			.then(function(response) {
 				var x2js = new X2JS();
-				var json = x2js.xml_str2json( response );
+				var json = x2js.xml_str2json( response.data );
 				$scope.searchResultRoutes = [].concat(json.result.route);
 				$scope.showNearStops = false;
 				$scope.showResults = true;
 				$ionicLoading.hide();
-
-			});
+	        }, function(response) {
+	          	$ionicLoading.hide();
+				$ionicLoading.show({
+					template: noConnectionPopup.getTemplate('search','hideIonicLoading'),
+					scope: $scope,
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 400,
+					showDelay: 0
+				});
+	      	});
 		}
 	};
 
 	$scope.getPos = function() {
-		$scope.hasPosition = true;
+		
 		var options = {timeout: 10000, enableHighAccuracy: true};
 
 		$cordovaGeolocation.getCurrentPosition(options).then(function(position){
 			$scope.poslat = position.coords.latitude;
 			$scope.poslon = position.coords.longitude;
+			$scope.hasPosition = true;
 		});
 	};
 
@@ -294,20 +398,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 
 	$scope.getCloseStops = function() {
 
-		var template_modal =
-			'<div class="custom-modal">'+
-			  '<div class="modal-title">Connection problem</div>'+
-			  '<div class="modal-body">Check your internet connection...</div>'+
-			  '<div class="modal-buttons button-bar">'+
-			  	'<button class="button button-outline button-small button-light" ng-click="getCloseStops()">'+
-			  		'Try again'+
-			  	'</button>'+
-			  	'<button class="button button-outline button-small button-light" ng-click="hideIonicLoading()">'+
-			  		'Cancel'+
-			  	'</button>'+
-			  '</div>'+
-			'</div>';
-
 		$ionicLoading.hide();
 		$ionicLoading.show({
 			content: 'Loading',
@@ -322,23 +412,20 @@ angular.module('lapd.existdb', ['ngCordova'])
 		url += "lon=" + $scope.poslon;
 		url += "&lat=" + $scope.poslat;
 		url += "&rng=" + $scope.range;
-
+		
 		$http({
 			method: 'GET',
 			url: url,
 			cache: $templateCache})
 		.then(function(response) {
-          	console.log(response);
           	var x2js = new X2JS();
           	var json = x2js.xml_str2json( response.data );
           	$scope.stops = json.result.stop;
           	$ionicLoading.hide();
         }, function(response) {
-        	console.log(response);
           	$ionicLoading.hide();
-          	console.log('escondeu');
 			$ionicLoading.show({
-				template: template_modal,
+				template: noConnectionPopup.getTemplate('getCloseStops','hideIonicLoading'),
 				scope: $scope,
 				animation: 'fade-in',
 				showBackdrop: true,
@@ -349,7 +436,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 	};
 
 	$scope.hideIonicLoading = function(){
-		console.log('tenta esconder');
 		$ionicLoading.hide();
 	};
 
