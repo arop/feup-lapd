@@ -9943,7 +9943,8 @@ div.title {
 #help_view .list .item.item-accordion.ng-hide-remove {
   display: block !important; }
 
-#help_view .question ion-item:last-child {
-  background: white;
-  white-space: normal;
-  line-height: 30px; }
+#help_view .question ion-item {
+  white-space: normal; }
+  #help_view .question ion-item:last-child {
+    background: white;
+    line-height: 30px; }

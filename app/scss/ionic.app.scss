@@ -279,7 +279,7 @@ div.title {
       }
     }
   }
-  
+
 }
 
 
@@ -356,10 +356,13 @@ div.title {
   }
 
   .question {
-    ion-item:last-child {
-      background: white;
+    ion-item{
       white-space: normal;
-      line-height: 30px;
+
+      &:last-child {
+        background: white;
+        line-height: 30px;
+      }
     }
   }
 }
