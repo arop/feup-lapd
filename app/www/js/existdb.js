@@ -72,6 +72,7 @@ angular.module('lapd.existdb', ['ngCordova'])
       }
     };
 
+    // STOPS 
     favorites.addStop = function (stop){
       favorites.initialize();
       var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
@@ -95,9 +96,42 @@ angular.module('lapd.existdb', ['ngCordova'])
       return favorites_temp.stops[stop.id] !== undefined;
     }
 
+
+    // ROUTES
+    favorites.addRoute = function (route){
+      favorites.initialize();
+      var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+      favorites_temp.routes[route.id] = route;
+      window.localStorage.setItem('favorites', JSON.stringify(favorites_temp));
+    };
+
+    favorites.removeRoute = function (route){
+      favorites.initialize();
+      var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+      delete favorites_temp.routes[route.id];
+      window.localStorage.setItem('favorites', JSON.stringify(favorites_temp));
+    };
+
+    /**
+     *	return true if stop exists in favorites and false otherwise.
+     */
+    favorites.routeExists = function(route){
+      favorites.initialize();
+      var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
+      return favorites_temp.routes[route.id] !== undefined;
+    }
+
+
+    // GETS
+
     favorites.getStops = function (){
       favorites.initialize();
       return JSON.parse(window.localStorage.getItem('favorites')).stops;
+    }
+
+    favorites.getRoutes = function (){
+      favorites.initialize();
+      return JSON.parse(window.localStorage.getItem('favorites')).routes;
     }
 
     favorites.getAll = function () {
@@ -205,7 +239,19 @@ angular.module('lapd.existdb', ['ngCordova'])
     };
   })
 
-  .controller('RoutesController', function($scope, $stateParams, $http, $templateCache, ionicLoadingService, connectionProblemPopup, currentRoute) {
+  .controller('RoutesController', function($scope, $stateParams, $http, $templateCache, ionicLoadingService, connectionProblemPopup, currentRoute, favorites) {
+	$scope.route_in_favorites = favorites.routeExists(currentRoute.route);
+
+  	$scope.addRouteToFavorites = function (){
+  	  favorites.addRoute(currentRoute.route);
+  	  $scope.route_in_favorites = true;
+  	};
+
+  	$scope.removeRouteFromFavorites = function(){
+  	  favorites.removeRoute(currentRoute.route);
+  	  $scope.route_in_favorites = false;
+  	};
+
 
     $scope.getStopsOfRoute = function() {
       ionicLoadingService.showLoading();

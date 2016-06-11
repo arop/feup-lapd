@@ -1,6 +1,21 @@
 <ion-view title = "Trip Planner">
+
+  <ion-nav-bar class="bar-calm nav-title-slide-ios7">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="getTrip()"><i class="icon ion-android-bus"></i> Go</button>
+      </ion-nav-buttons>
+  </ion-nav-bar>
+
   <ion-content>
-    <div style="height: 20vh">
+    <div id="trip_planner_form_container">
       <form id = "trip_planner_form">
         <div class = "form-group">
           <label for = "startName">Start</label>
@@ -19,10 +34,10 @@
         </div>
       </form>
 
-      <button id = "go-button" class = "button controls" ng-click = "getTrip()"><i class="icon ion-android-bus"></i> Go</button>
     </div>
 
-    <div style = "height:75vh" id = "tripplannermap" data-tap-disabled = "true" ng-controller = "TripPlannerMapCtrl"></div>
+    <div id="tripplannermap" data-tap-disabled="true" ng-controller="TripPlannerMapCtrl"></div>
+
     <div id = "startMarker" hidden = "true" lat = "" lon = ""></div>
     <div id = "endMarker" hidden = "true" lat = "" lon = ""></div>
   </ion-content>
