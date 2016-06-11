@@ -44,5 +44,6 @@
   <allow-navigation href="http://cloud.joaonorim.eu:22000/exist/*" /> 
   <allow-navigation href="http://maps.google.com/*" />
   <allow-navigation href="https://api.ost.pt/*" />
+  <allow-navigation href="https://api.uber.com/*" />
 
 </widget>

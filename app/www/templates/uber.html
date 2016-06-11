@@ -22,10 +22,12 @@
 				</div>
 
 				<ion-item ng-repeat="e in estimates">
-					<h2>{{e.display_name}}</h2>
-					<p>Price estimate: {{e.estimate}}</p>
-					<p>Aproximate distance: {{e.distance * 1.609344 | number: 3}}km</p>
-					<p>Aproximate time: {{e.duration / 60 | number: 0}}min</p>
+					<span ng-click="openUberExternal(e.product_id)">
+						<h2>{{e.display_name}}</h2>
+						<p>Price estimate: {{e.estimate}}</p>
+						<p>Aproximate distance: {{e.distance * 1.609344 | number: 3}}km</p>
+						<p>Aproximate time: {{e.duration / 60 | number: 0}}min</p>
+					</span>
 				</ion-item>
 			</ion-list>
 		</div>

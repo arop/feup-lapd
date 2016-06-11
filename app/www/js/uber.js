@@ -11,28 +11,28 @@ angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 	$scope.showEstimate = false;
 
 	$scope.getEstimates = function () {
-		var tripFromPlanner = TripValuesInUber.getTrip();
+		$scope.tripFromPlanner = TripValuesInUber.getTrip();
 
-		if(tripFromPlanner.endLat != undefined) {
+		if($scope.tripFromPlanner.endLat != undefined) {
 			ionicLoadingService.showLoading();
 
-			var url = base_url_cors + base_uber_url;
+			var url = /*base_url_cors +*/ base_uber_url;
 
 			url += 'estimates/price?';
 
 			url += 'server_token=' + server_token;
 
-			url += '&start_latitude=' + tripFromPlanner.beginLat;
-			url += '&start_longitude=' + tripFromPlanner.beginLon;
-			url += '&end_latitude=' + tripFromPlanner.endLat;
-			url += '&end_longitude=' + tripFromPlanner.endLon;
+			url += '&start_latitude=' + $scope.tripFromPlanner.beginLat;
+			url += '&start_longitude=' + $scope.tripFromPlanner.beginLon;
+			url += '&end_latitude=' + $scope.tripFromPlanner.endLat;
+			url += '&end_longitude=' + $scope.tripFromPlanner.endLon;
 
 
 			$http.get(url).success( function(response) {
 				$scope.estimates = response.prices;
-
+				console.log(response);
 				//get names
-				geocodeLatLngInUber(geocoder, tripFromPlanner);
+				geocodeLatLngInUber(geocoder, $scope.tripFromPlanner);
 				$scope.showEstimate = true;
 
 				ionicLoadingService.hideLoading();
@@ -40,6 +40,18 @@ angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 
 		}
 		else console.log("null trip");
+	}
+
+	$scope.openUberExternal = function(product_id){
+		//var link = 'https://m.uber.com/ul'
+		var link = 'uber://'
+			+'?client_id=4JksOWDKmCFbjc9qSL-g2oP4JgKdOTww&action=setPickup'
+			+'&pickup[latitude]='+$scope.tripFromPlanner.beginLat
+			+'&pickup[longitude]='+$scope.tripFromPlanner.beginLon
+			+'&dropoff[latitude]='+$scope.tripFromPlanner.endLat
+			+'&dropoff[longitude]='+$scope.tripFromPlanner.endLon
+			+'&product_id='+product_id;
+		window.open(link, '_system');
 	}
 })
 
