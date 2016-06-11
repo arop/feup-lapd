@@ -1,35 +1,35 @@
 <ion-view title="Uber" data-ng-init="getEstimates()">
-	<ion-content>
-		<div ng-show="showEstimate">
-			<ion-list>
-				<div class="item item-divider">
-					Trip
-				</div>
+  <ion-content>
+    <div ng-show="showEstimate">
+      <ion-list>
+        <div class="item item-divider">
+          Trip
+        </div>
 
-				<label class="item item-input item-stacked-label">
-					<span class="input-label">From</span>
-					<!--<span class="input" id="startNameTripUber"></span>-->
-					<input type="text" placeholder="John" id="startNameTripUber" readonly>
-				</label>
-				<label class="item item-input item-stacked-label">
-					<span class="input-label">To</span>
-					<!--<span class="input" id="endNameTripUber"></span>-->
-					<input type="text" placeholder="To" id="endNameTripUber" readonly>
-				</label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">From</span>
+          <!--<span class="input" id="startNameTripUber"></span>-->
+          <input type="text" placeholder="John" id="startNameTripUber" readonly>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">To</span>
+          <!--<span class="input" id="endNameTripUber"></span>-->
+          <input type="text" placeholder="To" id="endNameTripUber" readonly>
+        </label>
 
-				<div class="item item-divider">
-					Available options
-				</div>
+        <div class="item item-divider">
+          Available options
+        </div>
 
-				<ion-item ng-repeat="e in estimates">
+        <ion-item ng-repeat="e in estimates">
 					<span ng-click="openUberExternal(e.product_id)">
 						<h2>{{e.display_name}}</h2>
 						<p>Price estimate: {{e.estimate}}</p>
 						<p>Aproximate distance: {{e.distance * 1.609344 | number: 3}}km</p>
 						<p>Aproximate time: {{e.duration / 60 | number: 0}}min</p>
 					</span>
-				</ion-item>
-			</ion-list>
-		</div>
-	</ion-content>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
 </ion-view>
