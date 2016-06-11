@@ -142,6 +142,26 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.ube
         }
       })
 
+      .state('app.contacts', {
+        url: '/contacts',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/contact.html',
+            controller: ''
+          }
+        }
+      })
+
+      .state('app.help', {
+        url: '/help',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/help.html',
+            controller: 'HelpController'
+          }
+        }
+      })
+
       .state('app.home', {
         url: '/home',
         views: {
@@ -191,4 +211,4 @@ angular.module('lapd', ['ionic','lapd.map','lapd.existdb', 'lapd.ost', 'lapd.ube
         }
       });
     };
-  })
+  });
