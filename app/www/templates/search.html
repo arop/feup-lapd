@@ -41,7 +41,7 @@
       <h1>Search results</h1>
       <ion-list>
         <ion-item ng-repeat="s in searchResultStops" ng-click="viewStop(s)" ng-if="search.by == searchOptions[0]">
-          {{s.stop_name}}
+          {{s.stop_name}} - {{ s.distance }}
         </ion-item> <!-- ui-sref="app.stop({id: s.id})" -->
         <ion-item ng-repeat="s in searchResultRoutes" ng-click="viewRoute(s)" ng-if="search.by == searchOptions[1]">
           {{s.route_short_name}} - {{s.route_long_name}}
@@ -50,7 +50,7 @@
     </div>
 
     <!--<div class="modal-block">
-      
+
       <div class="modal-background">
         <div class="modal-container">
           <div class="modal-title">Connection problem</div>

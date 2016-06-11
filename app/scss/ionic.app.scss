@@ -250,6 +250,7 @@ div.title {
   .form-group {
     width: 100%;
     padding: 0 5px;
+    margin-bottom: 1.5em;
 
     label {
       width: 20%;
@@ -261,6 +262,10 @@ div.title {
       width: 75%;
       display: inline-block;
 
+      &:last-child {
+        width: 100%;
+      }
+
       input {
         width: 100%;
       }
@@ -271,6 +276,9 @@ div.title {
 #go-button {
   display: inline-block;
   width: 10%;
+  margin-top: 3.5em;
+  color: #fff;
+  background: #11c1f3;
 }
 
 .custom-modal{
@@ -301,3 +309,55 @@ div.title {
   }
 }
 
+
+/* Contact Page */
+#contacts_view {
+  text-align: center;
+  font-size: 1.2em;
+  padding-top: 4em;
+
+  p {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  a {
+    text-decoration: none;
+    color: #11C1F3;
+    font-size: 1.8em;
+    display: block;
+    margin-bottom: 2.5em;
+  }
+}
+
+
+/* Help View */
+#help_view {
+  ion-item {
+    text-align: left;
+  }
+
+  .list .item.item-accordion {
+    line-height: 38px;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: 0.09s all linear;
+    text-align: left;
+  }
+  .list .item.item-accordion.ng-hide {
+    line-height: 0px;
+  }
+  .list .item.item-accordion.ng-hide-add,
+  .list .item.item-accordion.ng-hide-remove {
+    display: block !important;
+  }
+
+  .question {
+    ion-item:last-child {
+      background: white;
+      white-space: normal;
+      line-height: 30px;
+    }
+  }
+}

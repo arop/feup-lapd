@@ -9869,7 +9869,8 @@ div.title {
   display: inline-block; }
   #trip_planner_form .form-group {
     width: 100%;
-    padding: 0 5px; }
+    padding: 0 5px;
+    margin-bottom: 1.5em; }
     #trip_planner_form .form-group label {
       width: 20%;
       display: inline-block;
@@ -9877,12 +9878,17 @@ div.title {
     #trip_planner_form .form-group div {
       width: 75%;
       display: inline-block; }
+      #trip_planner_form .form-group div:last-child {
+        width: 100%; }
       #trip_planner_form .form-group div input {
         width: 100%; }
 
 #go-button {
   display: inline-block;
-  width: 10%; }
+  width: 10%;
+  margin-top: 3.5em;
+  color: #fff;
+  background: #11c1f3; }
 
 .custom-modal .modal-title {
   border-style: solid;
@@ -9904,3 +9910,42 @@ div.title {
   #trip-walk-step-map-container #trip-walk-step-map {
     /*height: 100%;
     width:100%;*/ }
+
+/* Contact Page */
+#contacts_view {
+  text-align: center;
+  font-size: 1.2em;
+  padding-top: 4em; }
+  #contacts_view p {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto; }
+  #contacts_view a {
+    text-decoration: none;
+    color: #11C1F3;
+    font-size: 1.8em;
+    display: block;
+    margin-bottom: 2.5em; }
+
+/* Help View */
+#help_view ion-item {
+  text-align: left; }
+
+#help_view .list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+  text-align: left; }
+
+#help_view .list .item.item-accordion.ng-hide {
+  line-height: 0px; }
+
+#help_view .list .item.item-accordion.ng-hide-add,
+#help_view .list .item.item-accordion.ng-hide-remove {
+  display: block !important; }
+
+#help_view .question ion-item:last-child {
+  background: white;
+  white-space: normal;
+  line-height: 30px; }
