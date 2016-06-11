@@ -42,20 +42,34 @@ angular.module('lapd.map', ['ngCordova'])
   .controller('StopMapCtrl', function($scope, $cordovaGeolocation) {
     var options = {timeout: 10000, enableHighAccuracy: true};
 
+    var stopLatLng = new google.maps.LatLng(document.getElementById("coord").getAttribute("lat"),
+      document.getElementById("coord").getAttribute("lon"));
+
+    var mapOptions = {
+      center: stopLatLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    $scope.map = new google.maps.Map(document.getElementById("stopmap"), mapOptions);
+
+    var stopmarker = new google.maps.Marker({
+      map: $scope.map,
+      animation: google.maps.Animation.DROP,
+      position: stopLatLng
+    });
+
+    var stopInfoWindow = new google.maps.InfoWindow({
+      content: "Stop is here!"
+    });
+
+    google.maps.event.addListener(stopmarker, 'click', function () {
+      stopInfoWindow.open($scope.map, stopmarker);
+    });
+
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      var stopLatLng = new google.maps.LatLng(document.getElementById("coord").getAttribute("lat"),
-        document.getElementById("coord").getAttribute("lon"));
-
-      var mapOptions = {
-        center: stopLatLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-
-      $scope.map = new google.maps.Map(document.getElementById("stopmap"), mapOptions);
-
+      
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
@@ -73,20 +87,6 @@ angular.module('lapd.map', ['ngCordova'])
           infoWindow.open($scope.map, marker);
         });
 
-        var stopmarker = new google.maps.Marker({
-          map: $scope.map,
-          animation: google.maps.Animation.DROP,
-          position: stopLatLng
-        });
-
-        var stopInfoWindow = new google.maps.InfoWindow({
-          content: "Stop is here!"
-        });
-
-        google.maps.event.addListener(stopmarker, 'click', function () {
-          stopInfoWindow.open($scope.map, stopmarker);
-        });
-
       });
 
     }, function(error){
@@ -98,23 +98,19 @@ angular.module('lapd.map', ['ngCordova'])
   .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
     var options = {timeout: 10000, enableHighAccuracy: true};
 
+    var geocoder = new google.maps.Geocoder;
+    var mapOptions = {
+      center: new google.maps.LatLng( 41.1483464,-8.6109996 ), //Aliados
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    $scope.map = new google.maps.Map(document.getElementById("tripplannermap"), mapOptions);
+    initAutocomplete($scope.map, geocoder);
+
     // start map after getting current position
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-      var geocoder = new google.maps.Geocoder;
-
-      var mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-
-      $scope.map = new google.maps.Map(document.getElementById("tripplannermap"), mapOptions);
-
-      initAutocomplete($scope.map, geocoder);
-
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
@@ -131,31 +127,6 @@ angular.module('lapd.map', ['ngCordova'])
         google.maps.event.addListener(marker, 'click', function () {
           infoWindowCurrent.open($scope.map, marker);
         });
-
-        var markerStart = new google.maps.Marker({
-          map: $scope.map,
-          draggable: true,
-          animation: google.maps.Animation.DROP,
-          position: latLng
-        });
-
-        var infoWindowStart = new google.maps.InfoWindow({
-          content: "Start here!"
-        });
-
-        google.maps.event.addListener(markerStart, 'click', function () {
-          infoWindowStart.open($scope.map, markerStart);
-
-          markerStart.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png');
-
-          document.getElementById('startMarker').setAttribute("lat", marker.position.lat());
-          document.getElementById('startMarker').setAttribute("lon", marker.position.lng());
-
-          geocodeLatLng(geocoder, 'start');
-        });
-
-        google.maps.event.addListener( markerStart, 'dragend', function(){
-          google.maps.event.trigger(this, 'click');} );
 
       });
 
@@ -217,149 +188,94 @@ function callback(results, status) {
 /**
  * Get search results from google places API
  */
-function initAutocomplete(map, geocoder) {
-
+function initAutocomplete(map) {
+  console.log('init autocomplete');
   // START
   // Create the search box and link it to the UI element.
   var inputStart = document.getElementById('pac-input-start');
-  var searchBoxStart = new google.maps.places.SearchBox(inputStart);
+  var autocompleteStart = new google.maps.places.Autocomplete(inputStart);
 
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBoxStart.setBounds(map.getBounds());
+  autocompleteStart.bindTo('bounds', map);
+
+  var infowindow = new google.maps.InfoWindow();
+  var markerStart = new google.maps.Marker({
+      map: map
+  });
+  google.maps.event.addListener(markerStart, 'click', function() {
+      infowindow.open(map, markerStart);
   });
 
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  var markersStart = [];
-  searchBoxStart.addListener('places_changed', function() {
-    var places = searchBoxStart.getPlaces();
 
-    if (places.length == 0) {
-      return;
+  // Get the full place details when the user selects a place from the
+  // list of suggestions.
+  google.maps.event.addListener(autocompleteStart, 'place_changed', function() {
+    infowindow.close();
+    var place = autocompleteStart.getPlace();
+    if (!place.geometry) {
+        return;
+    }
+    document.getElementById('startMarker').setAttribute("lat", autocompleteStart.getPlace().geometry.location.lat());
+    document.getElementById('startMarker').setAttribute("lon", autocompleteStart.getPlace().geometry.location.lng());
+
+    if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+    } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(17);
     }
 
-    // Clear out the old markers.
-    markersStart.forEach(function(marker) {
-      marker.setMap(null);
-    });
-    markersStart = [];
+    // Set the position of the marker using the place ID and location.
+    markerStart.setPlace( /** @type {!google.maps.Place} */ ({
+        placeId: place.place_id,
+        location: place.geometry.location
+    }));
+    markerStart.setVisible(true);
 
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      var markerStart = new google.maps.Marker({
-        map: map,
-        title: place.name,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        position: place.geometry.location
-      });
-
-      var infoWindow = new google.maps.InfoWindow({
-        content: "Start trip here!"
-      });
-
-      google.maps.event.addListener(markerStart, 'click', function () {
-        infoWindow.open(map, markerStart);
-        document.getElementById('startMarker').setAttribute("lat", markerStart.position.lat());
-        document.getElementById('startMarker').setAttribute("lon", markerStart.position.lng());
-
-        markerStart.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-        geocodeLatLng(geocoder, 'start');
-      });
-
-      // make drag event trigger click event
-      google.maps.event.addListener( markerStart, 'dragend', function(){
-        google.maps.event.trigger(this, 'click');
-      });
-
-      new google.maps.event.trigger( markerStart, 'click' );
-
-      // Create a marker for each place.
-      markersStart.push(markerStart);
-
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-
-    map.fitBounds(bounds);
   });
 
 
   // END
-  // Create the search box and link it to the UI element.
-  var inputEnd = document.getElementById('pac-input-end');
-  var searchBoxEnd = new google.maps.places.SearchBox(inputEnd);
 
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBoxEnd.setBounds(map.getBounds());
+  var inputEnd = document.getElementById('pac-input-end');
+  var autocompleteEnd = new google.maps.places.Autocomplete(inputEnd);
+
+  autocompleteEnd.bindTo('bounds', map);
+
+  var infowindow = new google.maps.InfoWindow();
+  var markerEnd = new google.maps.Marker({
+      map: map
+  });
+  google.maps.event.addListener(markerEnd, 'click', function() {
+      infowindow.open(map, markerEnd);
   });
 
 
-  var markersEnd = [];
-  searchBoxEnd.addListener('places_changed', function() {
-    var places = searchBoxEnd.getPlaces();
-
-    if (places.length == 0) {
-      return;
+  // Get the full place details when the user selects a place from the
+  // list of suggestions.
+  google.maps.event.addListener(autocompleteEnd, 'place_changed', function() {
+    infowindow.close();
+    var place = autocompleteEnd.getPlace();
+    if (!place.geometry) {
+        return;
     }
 
-    // Clear out the old markers.
-    markersEnd.forEach(function(marker) {
-      marker.setMap(null);
-    });
-    markersEnd = [];
+    document.getElementById('endMarker').setAttribute("lat", autocompleteEnd.getPlace().geometry.location.lat());
+    document.getElementById('endMarker').setAttribute("lon", autocompleteEnd.getPlace().geometry.location.lng());
 
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      var markerEnd = new google.maps.Marker({
-        map: map,
-        title: place.name,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        position: place.geometry.location
-      });
+    if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+    } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(17);
+    }
 
-      var infoWindow = new google.maps.InfoWindow({
-        content: "End trip here!"
-      });
-
-      google.maps.event.addListener(markerEnd, 'click', function () {
-        infoWindow.open(map, markerEnd);
-        document.getElementById('endMarker').setAttribute("lat", markerEnd.position.lat());
-        document.getElementById('endMarker').setAttribute("lon", markerEnd.position.lng());
-
-        markerEnd.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-        geocodeLatLng(geocoder, 'end');
-      });
-
-      // make drag event trigger click event
-      google.maps.event.addListener( markerEnd, 'dragend', function(){
-        google.maps.event.trigger(this, 'click');
-      });
-
-      new google.maps.event.trigger( markerEnd, 'click' );
-
-      // Create a marker for each place.
-      markersEnd.push(markerEnd);
-
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-
-    map.fitBounds(bounds);
-  });
+    // Set the position of the marker using the place ID and location.
+    markerEnd.setPlace( /** @type {!google.maps.Place} */ ({
+        placeId: place.place_id,
+        location: place.geometry.location
+    }));
+    markerEnd.setVisible(true);
+  });  
 
 }
 

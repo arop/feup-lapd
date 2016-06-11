@@ -183,7 +183,7 @@ angular.module('lapd.existdb', ['ngCordova'])
     };
   })
 
-  .controller('RoutesController', function($scope, $stateParams, $http, ionicLoadingService, connectionProblemPopup, currentRoute) {
+  .controller('RoutesController', function($scope, $stateParams, $http, $templateCache, ionicLoadingService, connectionProblemPopup, currentRoute) {
 
     $scope.getStopsOfRoute = function() {
       ionicLoadingService.showLoading();
