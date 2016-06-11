@@ -21,7 +21,7 @@
       </button>
 
       <div class = "button col col-50">
-        <i class="ion-android-walk"></i> {{ Math.round( parseFloat(stop.distance) * 100) / 100 }}Km
+        <i class="ion-android-walk"></i> {{ stop.distance | number : 2}}Km
       </div>
     </label>
 

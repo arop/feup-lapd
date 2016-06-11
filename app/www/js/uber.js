@@ -4,7 +4,7 @@ var server_token = "GGNd9ZZenYoa-u3rgXcxUtG2DfBli6WaV3dgoe2n";
 
 angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 
-.controller('UberController', function ($scope, $http, $state, $ionicLoading, TripValuesInUber) {
+.controller('UberController', function ($scope, $http, $state, ionicLoadingService, connectionProblemPopup, TripValuesInUber) {
 
 	var geocoder = new google.maps.Geocoder;
 
@@ -14,13 +14,7 @@ angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 		var tripFromPlanner = TripValuesInUber.getTrip();
 
 		if(tripFromPlanner.endLat != undefined) {
-			$ionicLoading.show({
-				content: 'Loading',
-				animation: 'fade-in',
-				showBackdrop: true,
-				maxWidth: 200,
-				showDelay: 0
-			});
+			ionicLoadingService.showLoading();
 
 			var url = base_url_cors + base_uber_url;
 
@@ -41,7 +35,7 @@ angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 				geocodeLatLngInUber(geocoder, tripFromPlanner);
 				$scope.showEstimate = true;
 
-				$ionicLoading.hide();
+				ionicLoadingService.hideLoading();
 			});
 
 		}
