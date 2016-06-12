@@ -1,10 +1,11 @@
 <ion-view title="Trip" data-ng-init="showTripSteps()">
-  <ion-content>
-    <p>walk time: {{trip.walkTime / 60 | number: 2}}min</p>
-    <p>walk distance: {{trip.walkDistance | number: 2}}m</p>
-    <p>waiting time: {{trip.waitingTime}}min</p>
-    <p>transfers: {{trip.transfers}}</p>
+  <ion-content id="trip_steps">
+    <p class="info"><span>Walk time:</span> {{trip.walkTime / 60 | number: 2}}min</p>
+    <p class="info"><span>Walk distance:</span> {{trip.walkDistance | number: 2}}m</p>
+    <p class="info"><span>Waiting time:</span> {{trip.waitingTime}}min</p>
+    <p class="info"><span>Transfers:</span> {{trip.transfers}}</p>
 
+    <h1>Steps</h1>
     <ion-list>
       <ion-item ng-repeat="leg in trip.legs track by $index">
 			<span ng-if="leg.mode == 'BUS'">
