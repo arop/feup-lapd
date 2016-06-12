@@ -279,7 +279,7 @@ div.title {
       }
     }
   }
-  
+
 }
 
 
@@ -333,7 +333,6 @@ div.title {
   }
 }
 
-
 /* Help View */
 #help_view {
   ion-item {
@@ -356,10 +355,33 @@ div.title {
   }
 
   .question {
-    ion-item:last-child {
-      background: white;
+    ion-item{
       white-space: normal;
-      line-height: 30px;
+
+      &:last-child {
+        background: white;
+        line-height: 30px;
+      }
     }
+  }
+}
+
+/* Trip Steps */
+#trip_steps {
+  .info {
+    padding: 0 10px;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: $blue;
+    margin-top: 1.5em;
   }
 }

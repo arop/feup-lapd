@@ -1,23 +1,16 @@
 <ion-view title="Trip" data-ng-init="showTrip()">
-<ion-content>
-	<button class="button button-full button-stable icon-left ion-model-s" ui-sref="app.uber">
-		Get uber estimate
-	</button>
+  <ion-content>
+    <button class="button button-full button-stable icon-left ion-model-s" ui-sref="app.uber">
+      Get uber estimate
+    </button>
 
-	<ion-list>
-		<ion-item ng-repeat="trip in trips track by $index" ui-sref="app.tripplanner.show.steps({index: $index})">
-			<p>walk time: {{trip.walkTime / 60 | number: 2}}min</p>
-			<p>walk distance: {{trip.walkDistance | number: 2}}m</p>
-			<p>waiting time: {{trip.waitingTime}}min</p>
-			<p>transfers: {{trip.transfers}}</p>
-
-			<!--<ion-list>
-				<ion-item ng-repeat="leg in trip.legs">
-					{{leg}}
-				</ion-item>
-			</ion-list>-->
-				
-		</ion-item>
-	</ion-list>
-</ion-content>
+    <ion-list>
+      <ion-item ng-repeat="trip in trips track by $index" ui-sref="app.tripplanner.show.steps({index: $index})">
+        <p>walk time: {{trip.walkTime / 60 | number: 2}}min</p>
+        <p>walk distance: {{trip.walkDistance | number: 2}}m</p>
+        <p>waiting time: {{trip.waitingTime}}min</p>
+        <p>transfers: {{trip.transfers}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>

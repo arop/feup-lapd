@@ -3,28 +3,6 @@ var base_url = 'http://cloud.joaonorim.eu:22000/exist/feup-lapd/xql';
 
 angular.module('lapd.existdb', ['ngCordova'])
 
-  .controller('HelpController', function($scope){
-  $scope.questions = [];
-  $scope.questions.push({question: "To plan a trip do I need to know the stops' name?", answer: "No, you can introduce an address, a zip code, a establishment, a place, etc. We will give to you the near stops to those places."});
-  $scope.questions.push({question: "How can I add or remove a route/stop from favorites?", answer: "Open the route/stop that you want add or remove from favourites and in the top right corner you'll find a star. If the star is empty that route/stop is not in favourites, otheerwise is in favourites."});
-  $scope.questions.push({question: "Uber estimates are given by EZ Trip?", answer: "No. Uber estimates are given by Uber itself."});
-  $scope.questions.push({question: "Can I buy tickets to travel in bus and train through the application?", answer: "No. You'll have to buy the tickets with the respective companies."});
-
-  /*
-   * if given group is the selected group, deselect it
-   * else, select the given group
-   */
-  $scope.toggleQuestion = function(question) {
-    if ($scope.isQuestionShown(question)) {
-      $scope.shownQuestion = null;
-    } else {
-      $scope.shownQuestion = question;
-    }
-  };
-  $scope.isQuestionShown = function(question) {
-    return $scope.shownQuestion === question;
-  };
-})
   .controller('AgenciesController', function($scope, $http, $templateCache, ionicLoadingService, connectionProblemPopup){
     var url = base_url + "/agencies.xql";
 
@@ -72,7 +50,7 @@ angular.module('lapd.existdb', ['ngCordova'])
       }
     };
 
-    // STOPS 
+    // STOPS
     favorites.addStop = function (stop){
       favorites.initialize();
       var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
@@ -94,7 +72,7 @@ angular.module('lapd.existdb', ['ngCordova'])
       favorites.initialize();
       var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
       return favorites_temp.stops[stop.id] !== undefined;
-    }
+    };
 
 
     // ROUTES
@@ -119,20 +97,19 @@ angular.module('lapd.existdb', ['ngCordova'])
       favorites.initialize();
       var favorites_temp = JSON.parse(window.localStorage.getItem('favorites'));
       return favorites_temp.routes[route.id] !== undefined;
-    }
-
+    };
 
     // GETS
 
     favorites.getStops = function (){
       favorites.initialize();
       return JSON.parse(window.localStorage.getItem('favorites')).stops;
-    }
+    };
 
     favorites.getRoutes = function (){
       favorites.initialize();
       return JSON.parse(window.localStorage.getItem('favorites')).routes;
-    }
+    };
 
     favorites.getAll = function () {
       favorites.initialize();
@@ -140,7 +117,8 @@ angular.module('lapd.existdb', ['ngCordova'])
     }
   })
 
-  .controller('StopsController', function($scope, $stateParams, $http, $cordovaGeolocation, ionicLoadingService, $templateCache, currentStop, favorites, connectionProblemPopup){
+  .controller('StopsController', function($scope, $stateParams, $http, $templateCache, $cordovaGeolocation,
+                                          ionicLoadingService, currentStop, favorites, connectionProblemPopup){
     $scope.stop_in_favorites = false;
     if($scope.stop === undefined) $scope.stop = {};
 
@@ -178,7 +156,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 
         }, function(response) {
           ionicLoadingService.hideLoading();
-
           connectionProblemPopup.showRetry($scope.getStopFromExistdb);
         });
     };
@@ -197,6 +174,10 @@ angular.module('lapd.existdb', ['ngCordova'])
 
           var x2js = new X2JS();
           var json = x2js.xml_str2json( response.data );
+
+          $scope.short_name = json.result.route._short_name;
+          $scope.long_name = json.result.route._long_name;
+
           $scope.schedule = json.result.route;
 
           var stoptimes = [];
@@ -233,25 +214,23 @@ angular.module('lapd.existdb', ['ngCordova'])
 
         }, function(response) {
           ionicLoadingService.hideLoading();
-
           connectionProblemPopup.showRetry($scope.getStopSchedule);
         });
     };
   })
 
   .controller('RoutesController', function($scope, $stateParams, $http, $templateCache, ionicLoadingService, connectionProblemPopup, currentRoute, favorites) {
-	$scope.route_in_favorites = favorites.routeExists(currentRoute.route);
+    $scope.route_in_favorites = favorites.routeExists(currentRoute.route);
 
-  	$scope.addRouteToFavorites = function (){
-  	  favorites.addRoute(currentRoute.route);
-  	  $scope.route_in_favorites = true;
-  	};
+    $scope.addRouteToFavorites = function (){
+      favorites.addRoute(currentRoute.route);
+      $scope.route_in_favorites = true;
+    };
 
-  	$scope.removeRouteFromFavorites = function(){
-  	  favorites.removeRoute(currentRoute.route);
-  	  $scope.route_in_favorites = false;
-  	};
-
+    $scope.removeRouteFromFavorites = function(){
+      favorites.removeRoute(currentRoute.route);
+      $scope.route_in_favorites = false;
+    };
 
     $scope.getStopsOfRoute = function() {
       ionicLoadingService.showLoading();
@@ -274,7 +253,6 @@ angular.module('lapd.existdb', ['ngCordova'])
           },
           function(response) {
             ionicLoadingService.hideLoading();
-
             connectionProblemPopup.showRetry($scope.getStopsOfRoute);
           });
     };
@@ -282,7 +260,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 
   .controller('FavoritesController', function($scope, $state, currentStop, currentRoute, favorites){
     $scope.favorites = favorites.getAll();
-    console.log($scope.favorites);
+    //console.log($scope.favorites);
     $scope.viewStop = function(stop) {
       currentStop.stop = stop;
       $state.go('app.stop',{'id' : stop.id});
@@ -311,7 +289,6 @@ angular.module('lapd.existdb', ['ngCordova'])
       by: function(newBy) { return arguments.length ? (_by = newBy) : _by; }
     };
 
-
     $scope.search = function() {
       ionicLoadingService.showLoading();
 
@@ -335,7 +312,6 @@ angular.module('lapd.existdb', ['ngCordova'])
 
           }, function(response) {
             ionicLoadingService.hideLoading();
-
             connectionProblemPopup.showRetry($scope.search);
           });
 

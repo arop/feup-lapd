@@ -1,21 +1,22 @@
 <ion-view title="{{ stop.stop_name }}" data-ng-init="getStop()">
 
   <ion-nav-bar class="bar-calm nav-title-slide-ios7">
-      <ion-nav-buttons side="right">
-        <button ng-if="!stop_in_favorites" class="button button-clear button-light" ng-click="addStopToFavorites()">
-          <i class="ion-ios-star-outline" style="font-size: 2rem"></i>
-        </button>
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="right">
+      <button ng-if="!stop_in_favorites" class="button button-clear button-light" ng-click="addStopToFavorites()">
+        <i class="ion-ios-star-outline" style="font-size: 2rem"></i>
+      </button>
 
-        <button ng-if="stop_in_favorites" class="button button-clear button-light" ng-click="removeStopFromFavorites()">
-          <i class="ion-ios-star" style="font-size: 2rem"></i>
-        </button>
+      <button ng-if="stop_in_favorites" class="button button-clear button-light" ng-click="removeStopFromFavorites()">
+        <i class="ion-ios-star" style="font-size: 2rem"></i>
+      </button>
 
-      </ion-nav-buttons>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content id="stop_view">
     <input type="hidden" id="coord" lat="{{stop.point.coordinates[1]}}" lon="{{stop.point.coordinates[0]}}">
-    <label class="row" id="top_info">
+    <div class="row" id="top_info">
       <button class = "button button-icon col col-50" ng-click="showMapBoolean=!showMapBoolean" ng-init="showMapBoolean=false">
         <span ng-show="!showMapboolean"><i class="ion-map"></i> Toggle Map</span>
       </button>
@@ -23,7 +24,7 @@
       <div class = "button col col-50">
         <i class="ion-android-walk"></i> {{ stop.distance | number : 2}}Km
       </div>
-    </label>
+    </div>
 
     <ion-list ng-show="!showMapBoolean">
       <h1>Routes</h1>

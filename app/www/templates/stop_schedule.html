@@ -1,21 +1,9 @@
-<ion-view title="{{stop.stop_name}}" data-ng-init="getStopSchedule()">
-	<ion-content>
-
-		<ion-list>
-		  <ion-item ng-repeat="time in schedule" >
-		  	{{time}}
-		  </ion-item>
-		</ion-list>
-
-		<!--<ion-list ng-repeat="route in schedule track by $index">
-			<div class="item item-divider">
-				id: {{route._id}} | long-name: {{route["_long-name"]}} | short-name: {{route["_short-name"]}}
-  			</div>
-			<ion-item ng-repeat="stoptimes in route" class="row responsive-sm">
-				<ion-item ng-repeat="arrival_times in stoptimes track by $index" class="col">
-					{{arrival_times.arrival_times | limitTo: 5}}
-				</ion-item>
-			</ion-list>
-		</ion-list>-->
-	</ion-content>
+<ion-view title="{{short_name}}" data-ng-init="getStopSchedule()">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="time in schedule" >
+        {{time}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>

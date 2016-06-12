@@ -1,44 +1,5 @@
 angular.module('lapd.map', ['ngCordova'])
 
-  .controller('MapCtrl', function($scope, $cordovaGeolocation) {
-    var options = {timeout: 10000, enableHighAccuracy: true};
-
-    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-
-      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-      var mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-      //Wait until the map is loaded
-      google.maps.event.addListenerOnce($scope.map, 'idle', function(){
-
-        var marker = new google.maps.Marker({
-          map: $scope.map,
-          animation: google.maps.Animation.DROP,
-          position: latLng
-        });
-
-        var infoWindow = new google.maps.InfoWindow({
-          content: "You are here!"
-        });
-
-        google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open($scope.map, marker);
-        });
-
-      });
-
-    }, function(error){
-      console.log("Could not get location");
-    });
-  })
-
   .controller('StopMapCtrl', function($scope, $cordovaGeolocation) {
     var options = {timeout: 10000, enableHighAccuracy: true};
 
@@ -69,7 +30,7 @@ angular.module('lapd.map', ['ngCordova'])
 
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      
+
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
@@ -93,7 +54,6 @@ angular.module('lapd.map', ['ngCordova'])
       console.log("Could not get location");
     });
   })
-
 
   .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
     var options = {timeout: 10000, enableHighAccuracy: true};
@@ -160,10 +120,10 @@ angular.module('lapd.map', ['ngCordova'])
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
 
-    //document.getElementById('trip-walk-step-map').style.height = document.getElementById('trip-walk-step-map-container').clientHeight+'px';
     document.getElementById('trip-walk-step-map').style.height =
       (window.innerHeight - document.getElementsByTagName('ion-header-bar')[0].offsetHeight)+'px';
-    document.getElementById('trip-walk-step-map').style.width  = document.getElementById('trip-walk-step-map-container').clientWidth+'px';
+    document.getElementById('trip-walk-step-map').style.width  =
+      document.getElementById('trip-walk-step-map-container').clientWidth+'px';
 
     $scope.map = new google.maps.Map(document.getElementById("trip-walk-step-map"), mapOptions);
     directionsDisplay.setMap($scope.map);
@@ -175,15 +135,6 @@ angular.module('lapd.map', ['ngCordova'])
     });
 
   })
-
-function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      var place = results[i];
-      createMarker(results[i]);
-    }
-  }
-}
 
 /**
  * Get search results from google places API
@@ -199,10 +150,10 @@ function initAutocomplete(map) {
 
   var infowindow = new google.maps.InfoWindow();
   var markerStart = new google.maps.Marker({
-      map: map
+    map: map
   });
   google.maps.event.addListener(markerStart, 'click', function() {
-      infowindow.open(map, markerStart);
+    infowindow.open(map, markerStart);
   });
 
 
@@ -212,22 +163,22 @@ function initAutocomplete(map) {
     infowindow.close();
     var place = autocompleteStart.getPlace();
     if (!place.geometry) {
-        return;
+      return;
     }
     document.getElementById('startMarker').setAttribute("lat", autocompleteStart.getPlace().geometry.location.lat());
     document.getElementById('startMarker').setAttribute("lon", autocompleteStart.getPlace().geometry.location.lng());
 
     if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
+      map.fitBounds(place.geometry.viewport);
     } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
     }
 
     // Set the position of the marker using the place ID and location.
     markerStart.setPlace( /** @type {!google.maps.Place} */ ({
-        placeId: place.place_id,
-        location: place.geometry.location
+      placeId: place.place_id,
+      location: place.geometry.location
     }));
     markerStart.setVisible(true);
 
@@ -235,7 +186,6 @@ function initAutocomplete(map) {
 
 
   // END
-
   var inputEnd = document.getElementById('pac-input-end');
   var autocompleteEnd = new google.maps.places.Autocomplete(inputEnd);
 
@@ -243,10 +193,10 @@ function initAutocomplete(map) {
 
   var infowindow = new google.maps.InfoWindow();
   var markerEnd = new google.maps.Marker({
-      map: map
+    map: map
   });
   google.maps.event.addListener(markerEnd, 'click', function() {
-      infowindow.open(map, markerEnd);
+    infowindow.open(map, markerEnd);
   });
 
 
@@ -256,61 +206,24 @@ function initAutocomplete(map) {
     infowindow.close();
     var place = autocompleteEnd.getPlace();
     if (!place.geometry) {
-        return;
+      return;
     }
 
     document.getElementById('endMarker').setAttribute("lat", autocompleteEnd.getPlace().geometry.location.lat());
     document.getElementById('endMarker').setAttribute("lon", autocompleteEnd.getPlace().geometry.location.lng());
 
     if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
+      map.fitBounds(place.geometry.viewport);
     } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
     }
 
     // Set the position of the marker using the place ID and location.
     markerEnd.setPlace( /** @type {!google.maps.Place} */ ({
-        placeId: place.place_id,
-        location: place.geometry.location
+      placeId: place.place_id,
+      location: place.geometry.location
     }));
     markerEnd.setVisible(true);
-  });  
-
-}
-
-
-/**
- * Display street name where marker is set
- */
-function geocodeLatLng(geocoder, startOrEnd) {
-  var lat = "";
-  var lon = "";
-
-  if(startOrEnd === 'start') {
-    lat = document.getElementById('startMarker').getAttribute("lat");
-    lon = document.getElementById('startMarker').getAttribute("lon");
-  } else {
-    lat = document.getElementById('endMarker').getAttribute("lat");
-    lon = document.getElementById('endMarker').getAttribute("lon");
-  }
-
-  var latlng = {lat: parseFloat(lat), lng: parseFloat(lon)};
-
-  geocoder.geocode({'location': latlng}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        if(startOrEnd === 'start') {
-          document.getElementById('startName').innerHTML = results[0].formatted_address;
-        } else {
-          document.getElementById('endName').innerHTML = results[0].formatted_address;
-        }
-      } else {
-        window.alert('No results found');
-      }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
-    }
   });
 }
-

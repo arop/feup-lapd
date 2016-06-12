@@ -1,23 +1,24 @@
 <ion-view title="{{route.route_short_name}} - {{route.route_long_name}}" data-ng-init="getStopsOfRoute()">
 
-	<ion-nav-bar class="bar-calm nav-title-slide-ios7">
-	    <ion-nav-buttons side="right">
-	      <button ng-if="!route_in_favorites" class="button button-clear button-light" ng-click="addRouteToFavorites()">
-	        <i class="ion-ios-star-outline" style="font-size: 2rem"></i>
-	      </button>
+  <ion-nav-bar class="bar-calm nav-title-slide-ios7">
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="right">
+      <button ng-if="!route_in_favorites" class="button button-clear button-light" ng-click="addRouteToFavorites()">
+        <i class="ion-ios-star-outline" style="font-size: 2rem"></i>
+      </button>
 
-	      <button ng-if="route_in_favorites" class="button button-clear button-light" ng-click="removeRouteFromFavorites()">
-	        <i class="ion-ios-star" style="font-size: 2rem"></i>
-	      </button>
+      <button ng-if="route_in_favorites" class="button button-clear button-light" ng-click="removeRouteFromFavorites()">
+        <i class="ion-ios-star" style="font-size: 2rem"></i>
+      </button>
 
-	    </ion-nav-buttons>
-	</ion-nav-bar>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
-	<ion-content>
-		<ion-list>
-		  <ion-item ng-repeat="s in stops" ui-sref="app.stop.schedule({id: s.id, route_id: route.id})">
-		  	{{s.stop_name}}
-		  </ion-item>
-		</ion-list>
-	</ion-content>
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="s in stops" ui-sref="app.stop.schedule({id: s.id, route_id: route.id})">
+        {{s.stop_name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>

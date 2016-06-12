@@ -1,54 +1,31 @@
 <ion-view title="Favorites" ng-init="">
-  <!--<ion-pane>-->
-    <ion-tabs class="tabs-icon-top tabs-dark">
+  <ion-tabs class="tabs-icon-top tabs-dark">
 
-      <!-- Tab 1 -->
-      <ion-tab title="Stops" icon="ion-home">
-        <ion-nav-view name="stops-tab">
-          <ion-content>
-            <ion-list>
-              <ion-item ng-repeat="s in favorites.stops" ng-click="viewStop(s)">
-                {{s.stop_name}}
-              </ion-item>
-            </ion-list>
-          </ion-content>
+    <!-- Tab 1 -->
+    <ion-tab title="Stops" icon="ion-home">
+      <ion-nav-view name="stops-tab">
+        <ion-content>
+          <ion-list>
+            <ion-item ng-repeat="s in favorites.stops" ng-click="viewStop(s)">
+              {{s.stop_name}}
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-nav-view>
+    </ion-tab>
 
-        </ion-nav-view>
-      </ion-tab>
-
-
-      <!-- Tab 2 -->
-      <ion-tab title="Routes" icon="ion-android-bus" >
-        <ion-nav-view name="routes-tab">
-          <ion-content>
-            <ion-list>
+    <!-- Tab 2 -->
+    <ion-tab title="Routes" icon="ion-android-bus" >
+      <ion-nav-view name="routes-tab">
+        <ion-content>
+          <ion-list>
             <ion-item ng-repeat="r in favorites.routes" ng-click="viewRoute(r)">
-                {{r.route_short_name}} - {{r.route_long_name}} 
-              </ion-item>
-            </ion-list>
-          </ion-content>
-        </ion-nav-view>
-      </ion-tab>
-    </ion-tabs>
+              {{r.route_short_name}} - {{r.route_long_name}}
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-nav-view>
+    </ion-tab>
+  </ion-tabs>
 
-  <!-- </ion-pane>
-	-<ion-content id = "favorites">
-		 <div class="resultsContainer">
-			 <h1>Stops</h1>
-			 <ion-list>
-				 <ion-item ng-repeat="s in favorites.stops" ng-click="viewStop(s)">
-					 {{s.stop_name}}
-				 </ion-item>
-			 </ion-list>
-		 </div>
-
-		 <div class="resultsContainer">
-			 <h1>Routes</h1>
-			 <ion-list>
-				 <ion-item ng-repeat="r in favorites.routes" ng-click="viewRoute(s)">
-					 {{s.stop_name}} - TODO
-				 </ion-item>
-			 </ion-list>
-		 </div>
-	 </ion-content>-->
 </ion-view>
