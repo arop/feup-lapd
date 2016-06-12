@@ -224,7 +224,7 @@ angular.module('lapd.existdb', ['ngCordova'])
 
               stoptimes.push(
                 (want_time.getHours() > 9 ? '' : '0') + want_time.getHours() + ':' +
-                (want_time.getMinutes() > 9 ? '' : '0') + want_time.getMinutes() + ':00' + ' ~');
+                (want_time.getMinutes() > 9 ? '' : '0') + want_time.getMinutes() + ':00' /*+ ' ~'*/); //appending ~ because time is calculated
             }
           }
           $scope.schedule = uniq(stoptimes);
