@@ -40,7 +40,7 @@
     <div class="resultsContainer" ng-if="showResults">
       <h1>Search results</h1>
       <ion-list>
-        <ion-item ng-repeat="s in searchResultStops" ng-click="viewStop(s)" ng-if="search.by == searchOptions[0]">
+        <ion-item ng-repeat="s in searchResultStops | orderBy:'distance'" ng-click="viewStop(s)" ng-if="search.by == searchOptions[0]">
           {{s.stop_name}} - {{ s.distance > 1 ? s.distance + 'km' : (s.distance*1000) + 'm' }}
         </ion-item>
         <ion-item ng-repeat="s in searchResultRoutes" ng-click="viewRoute(s)" ng-if="search.by == searchOptions[1]">

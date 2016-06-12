@@ -1,9 +1,9 @@
 <ion-view title="Trip" data-ng-init="showTripSteps()">
   <ion-content id="trip_steps">
-    <p class="info"><span>Walk time:</span> {{trip.walkTime / 60 | number: 2}}min</p>
-    <p class="info"><span>Walk distance:</span> {{trip.walkDistance | number: 2}}m</p>
-    <p class="info"><span>Waiting time:</span> {{trip.waitingTime}}min</p>
-    <p class="info"><span>Transfers:</span> {{trip.transfers}}</p>
+    <ion-item><span style="float:left">Walk time:</span> <span style="float:right">{{trip.walkTime / 60 | number: 2}}min</span></ion-item>
+    <ion-item><span style="float:left">Walk distance:</span> <span style="float:right">{{trip.walkDistance | number: 2}}m</span></ion-item>
+    <ion-item><span style="float:left">Waiting time:</span> <span style="float:right">{{trip.waitingTime}}min</span></ion-item>
+    <ion-item><span style="float:left">Transfers:</span> <span style="float:right">{{trip.transfers}}</span></ion-item>
 
     <h1>Steps</h1>
     <ion-list>

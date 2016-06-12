@@ -21,7 +21,8 @@
           <label for = "startName">Start</label>
           <div id="startName"></div>
           <div>
-            <input id="pac-input-start" class="controls" type="text" placeholder="Search Start Place">
+            <input id="pac-input-start" class="controls" type="text" placeholder="Search Start Place" 
+            data-tap-disabled="true" ng-change="disableTapStart()" ng-model="dummy1">
           </div>
         </div>
 
@@ -29,7 +30,8 @@
           <label for = "endName">End</label>
           <div id="endName"></div>
           <div>
-            <input id="pac-input-end" class="controls" type="text" placeholder="Search End Place">
+            <input id="pac-input-end" class="controls" type="text" placeholder="Search End Place"
+              data-tap-disabled="true" ng-change="disableTapEnd()" ng-model="dummy2">
           </div>
         </div>
       </form>
