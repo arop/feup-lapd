@@ -56,6 +56,14 @@ angular.module('lapd.map', ['ngCordova'])
   })
 
   .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
+
+
+    document.getElementById('tripplannermap').style.height =
+      (window.innerHeight 
+        - document.getElementsByTagName('ion-header-bar')[0].offsetHeight 
+        - document.getElementById('trip_planner_form_container').offsetHeight)+'px';
+    document.getElementById('tripplannermap').style.width = '100%';
+
     var options = {timeout: 10000, enableHighAccuracy: true};
 
     var geocoder = new google.maps.Geocoder;
@@ -94,6 +102,7 @@ angular.module('lapd.map', ['ngCordova'])
       console.log(error);
       console.log("Could not get location");
     });
+
   })
 
   .controller('TripShowWalkStepCtrl', function($scope, $cordovaGeolocation, currentTrip, $stateParams){

@@ -29,7 +29,7 @@
     <ion-list ng-show="!showMapBoolean">
       <h1>Routes</h1>
       <ion-item ng-repeat="route in stop._routes" ui-sref="app.stop.schedule({id: stop.id, route_id: route.id})">
-        {{route.route_short_name}} - {{ route.route_long_name}}
+        {{route.route_short_name}} <!-- - {{ route.route_long_name}} -->
       </ion-item>
     </ion-list>
 

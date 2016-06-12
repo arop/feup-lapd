@@ -135,6 +135,7 @@ angular.module('lapd.existdb', ['ngCordova'])
     $scope.getStop = function() {
       $scope.stop = currentStop.stop;
       $scope.stop_in_favorites = favorites.stopExists($scope.stop);
+      console.log($scope.stop);
     };
 
     $scope.getStopFromExistdb = function() {

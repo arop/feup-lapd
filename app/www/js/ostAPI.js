@@ -2,9 +2,10 @@ var base_url_ost = "https://api.ost.pt/";
 
 angular.module('lapd.ost', ['ngCordova'])
 
-  .controller('TripPlannerController', function ($scope, $http, $state, $stateParams, $templateCache, 
-                                                 ionicLoadingService, connectionProblemPopup, currentTrip, 
-                                                 TripValuesInTripplanner) {
+  .controller('TripPlannerController', function ($scope, $http, $state, $stateParams, $templateCache,
+    ionicLoadingService, connectionProblemPopup, currentTrip, TripValuesInTripplanner) {
+
+  
 
     $scope.showTrip = function () {
       $scope.trips = currentTrip.trips;
@@ -55,6 +56,31 @@ angular.module('lapd.ost', ['ngCordova'])
           }
         );
     };
+
+    // AUTO COMPLETE LONG PRESS ISSUE WORKAROUND 
+    $scope.disableTapStart = function() {
+      console.log('abc');
+        var container = document.getElementsByClassName('pac-container');
+        console.log(container);
+        angular.element(container).attr('data-tap-disabled', 'true');
+        var backdrop = document.getElementsByClassName('backdrop');
+        angular.element(backdrop).attr('data-tap-disabled', 'true');
+        angular.element(container).on("click", function() {
+            document.getElementById('pac-input-start').blur();
+        });
+    };
+
+    $scope.disableTapEnd = function() {
+        var container = document.getElementsByClassName('pac-container');
+        console.log(container);
+        angular.element(container).attr('data-tap-disabled', 'true');
+        var backdrop = document.getElementsByClassName('backdrop');
+        angular.element(backdrop).attr('data-tap-disabled', 'true');
+        angular.element(container).on("click", function() {
+            document.getElementById('pac-input-end').blur();
+        });
+    };
+    // END OF AUTO COMPLETE LONG PRESS ISSUE WORKAROUND
 
   })
 
