@@ -273,6 +273,7 @@ angular.module('lapd.existdb', ['ngCordova'])
   })
 
   .controller('SearchController', function($scope, $state, $http, $cordovaGeolocation, ionicLoadingService, connectionProblemPopup, currentStop, currentRoute, $templateCache){
+    
     if($scope.poslat === undefined) $scope.poslat = 0;
     if($scope.poslon === undefined) $scope.poslon = 0;
     if($scope.range === undefined) $scope.range = 1.0;
@@ -306,6 +307,7 @@ angular.module('lapd.existdb', ['ngCordova'])
             var json = x2js.xml_str2json( response.data );
 
             $scope.searchResultStops = [].concat(json.result.stop);
+            $scope.searchResultStops = $scope.calculateDistanceToStops($scope.searchResultStops);
             $scope.showNearStops = false;
             $scope.showResults = true;
             ionicLoadingService.hideLoading();
@@ -338,15 +340,30 @@ angular.module('lapd.existdb', ['ngCordova'])
       }
     };
 
+    $scope.calculateDistanceToStops = function (stops_param){
+    	var stops = stops_param;
+    	if($scope.poslat === undefined || $scope.poslat == null)
+    		return stops;
+    	console.log(stops);
+    	for (var i in stops){
+    		var dist_lat = ($scope.poslat - stops[i].point.coordinates[1])* 110.574
+    		var dist_lon = ($scope.poslon - stops[i].point.coordinates[0]) * 111.320 * Math.cos($scope.poslon)
+    		var distance = Math.sqrt(dist_lat*dist_lat + dist_lon*dist_lon);
+    		stops[i].distance = Math.round(distance * 1000) / 1000.0;
+    	}
+    	return stops;
+    }
+
     $scope.getPos = function() {
-
-      var options = {timeout: 10000, enableHighAccuracy: true};
-
-      $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-        $scope.poslat = position.coords.latitude;
-        $scope.poslon = position.coords.longitude;
-        $scope.hasPosition = true;
-      });
+		var options = {timeout: 10000, enableHighAccuracy: true};
+		$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+			$scope.poslat = position.coords.latitude;
+			$scope.poslon = position.coords.longitude;
+			$scope.hasPosition = true;
+		}, function(error){
+  			console.log("Could not get location");
+  			window.alert("Could not get your current location...");
+    	});
     };
 
     $scope.viewStop = function(stop) {
