@@ -32,7 +32,7 @@
       <h1>Stops near you</h1>
       <ion-list>
         <ion-item ng-repeat="s in stops" ng-click="viewStop(s)">
-          {{s.stop_name}}
+          {{s.stop_name}} - {{ s.distance > 1 ? (s.distance | number:3) + 'km' : (s.distance*1000 | number:0) + 'm' }}
         </ion-item>
       </ion-list>
     </div>

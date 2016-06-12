@@ -413,11 +413,12 @@ angular.module('lapd.existdb', ['ngCordova'])
       setButtonType: 'button-calm',  //Optional
       closeButtonType: 'button-stable',  //Optional
       callback: function (val) {    //Mandatory
+      	console.log(val);
         //timePickerCallback(val);
-        if(val == undefined)
-          $scope.range = 1.0;
-        else $scope.range = val;
-
+        if(val == undefined) //cancel button clicked
+        	return;
+     
+        $scope.range = val;
         $scope.getCloseStops();
         $scope.showResults = false;
         $scope.showNearStops = true;
