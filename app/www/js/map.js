@@ -37,7 +37,11 @@ angular.module('lapd.map', ['ngCordova'])
         var marker = new google.maps.Marker({
           map: $scope.map,
           animation: google.maps.Animation.DROP,
-          position: latLng
+          position: latLng,
+          icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+            new google.maps.Size(22,22),
+            new google.maps.Point(0,18),
+            new google.maps.Point(11,11))
         });
 
         var infoWindow = new google.maps.InfoWindow({
@@ -56,11 +60,9 @@ angular.module('lapd.map', ['ngCordova'])
   })
 
   .controller('TripPlannerMapCtrl', function($scope, $cordovaGeolocation) {
-
-
     document.getElementById('tripplannermap').style.height =
-      (window.innerHeight 
-        - document.getElementsByTagName('ion-header-bar')[0].offsetHeight 
+      (window.innerHeight
+        - document.getElementsByTagName('ion-header-bar')[0].offsetHeight
         - document.getElementById('trip_planner_form_container').offsetHeight)+'px';
     document.getElementById('tripplannermap').style.width = '100%';
 
@@ -81,11 +83,14 @@ angular.module('lapd.map', ['ngCordova'])
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       //Wait until the map is loaded
       google.maps.event.addListenerOnce($scope.map, 'idle', function(){
-
         var marker = new google.maps.Marker({
           map: $scope.map,
           animation: google.maps.Animation.DROP,
-          position: latLng
+          position: latLng,
+          icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+            new google.maps.Size(22,22),
+            new google.maps.Point(0,18),
+            new google.maps.Point(11,11))
         });
 
         var infoWindowCurrent = new google.maps.InfoWindow({
