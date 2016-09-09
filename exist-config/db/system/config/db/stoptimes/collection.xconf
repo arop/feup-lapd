@@ -7,6 +7,7 @@
             <analyzer class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
             <text qname="route_short_name"/>
             <text qname="route_long_name"/>
+            <text qname="id"/>
         </lucene>
     </index>
 </collection>
