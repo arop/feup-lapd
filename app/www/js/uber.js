@@ -1,6 +1,6 @@
 var base_url_cors = "https://crossorigin.me/"
 var base_uber_url = "https://api.uber.com/v1/";
-var server_token = "GGNd9ZZenYoa-u3rgXcxUtG2DfBli6WaV3dgoe2n";
+var server_token = "GGNd9ZZenYoa-u3rgXcxUtG2DfBli6WaV3goe2n";
 
 angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
 
@@ -45,7 +45,7 @@ angular.module('lapd.uber', ['ngCordova', 'lapd.ost'])
     $scope.openUberExternal = function(product_id){
       //var link = 'https://m.uber.com/ul'
       var link = 'uber://'
-        +'?client_id=4JksOWDKmCFbjc9qSL-g2oP4JgKdOTww&action=setPickup'
+        +'?client_id=4JksOWDKmCFbjc9qSL-g2oP4JgKdTww&action=setPickup'
         +'&pickup[latitude]='+$scope.tripFromPlanner.beginLat
         +'&pickup[longitude]='+$scope.tripFromPlanner.beginLon
         +'&dropoff[latitude]='+$scope.tripFromPlanner.endLat
